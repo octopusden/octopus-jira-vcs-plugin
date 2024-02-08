@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tail" type="TailRunConfiguration" factoryName="TailRunConfiguration">
+    <option name="autodetectEncoding" value="false" />
+    <option name="encoding" value="UTF-8" />
+    <option name="paths">
+      <list>
+        <option value="$PROJECT_DIR$/target/jira/home/log/atlassian-jira.log" />
+        <option value="$PROJECT_DIR$/target/jira/home/log/vcs.log" />
+      </list>
+    </option>
+    <option name="selectNewestMatchingFile" value="false" />
+    <method v="2" />
+  </configuration>
+</component>

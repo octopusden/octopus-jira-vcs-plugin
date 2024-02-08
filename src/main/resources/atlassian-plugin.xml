@@ -1,0 +1,42 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="Octopus" url="https://octopusden.org"/>
+    </plugin-info>
+
+    <component-import key="pluginSettingsFactory"
+                      interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
+
+    <resource type="i18n" name="i18n" location="atlassian-plugin.properties"/>
+    <component key="octopus-jira-vcs-plugin-settings" class="org.octopusden.octopus.jira.vcs.config.PluginSettings"/>
+
+    <web-section key="octopus-jira-vcs-section" location="admin_plugins_menu" name="VCS Facade" weight="90">
+        <label key="VCS Panel"/>
+    </web-section>
+
+    <web-item key="octopus-jira-vcs-settings" name="Octopus Jira VCS Plugin settings"
+              section="admin_plugins_menu/octopus-jira-vcs-section" weight="50">
+        <label key="Settings"/>
+        <link linkId="octopus-jira-vcs-settings">/secure/admin/OctopusVcsPluginSettings!default.jspa</link>
+    </web-item>
+
+    <webwork1 key="octopus-jira-vcs-actions" name="Octopus Jira VCS Plugin Actions" class="java.lang.Object">
+        <actions>
+            <action name="org.octopusden.octopus.jira.vcs.ui.PluginSettingsView" alias="OctopusVcsPluginSettings"
+                    roles-required="admin">
+                <view name="error">/templates/ui/admin/error.vm</view>
+                <view name="success">/templates/ui/admin/settings.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <component key="octopus-jira-vcs-vcs-facade-service-client-parameters-provider" class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.JiraVcsPluginVcsFacadeClientParametersProvider">
+        <interface>org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider</interface>
+    </component>
+
+    <component key="octopus-jira-vcs-vcs-facade-service" class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeServiceImpl">
+        <interface>org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService</interface>
+    </component>
+
+</atlassian-plugin>
