@@ -1,0 +1,37 @@
+#macro( paramInput $setting )
+<label class="label" for="$setting.key">$setting.displayName</label>
+<input class="text long-field" name="$setting.key"#if($setting.sensitive) type="password"#else type="text"#end value="$pluginSettings.get($setting)"/>
+#end
+
+<html>
+<head>
+    <title>Octopus Jira VCS Plugin Settings</title>
+    <meta name="decorator" content="jira.admin"/>
+    <meta name="admin.active.section" content="admin_plugins_menu/octopus-jira-vcs-section"/>
+    <meta name="admin.active.tab" content="octopus-jira-vcs-config"/>
+</head>
+<body>
+    <div class="module">
+        <h3>Octopus Jira VCS Plugin Settings</h3>
+        <form class="aui" method="post">
+            <div class="field-group">
+                #if ($updated)
+                    <div class="aui-message info">
+                        <span class="aui-icon icon-info"></span>
+                        Successfully Updated
+                    </div>
+                #end
+                #foreach ($setting in $availableSettings)
+                    <div class="field-group">
+                        #paramInput($setting)
+                    </div>
+                #end
+                <div class="field-group">
+                    <input class="aui-button" type="submit" value="Submit" name="submit">
+                    <input type="hidden" name="atl_token" value=$atl_token/>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
