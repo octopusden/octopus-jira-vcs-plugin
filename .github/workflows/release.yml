@@ -1,0 +1,15 @@
+name: Maven Release
+
+on:
+  repository_dispatch:
+    types: release
+
+jobs:
+  build:
+    uses: octopusden/octopus-base/.github/workflows/common-java-maven-release.yml@v2.1.7
+    with:
+      flow-type: hybrid
+      java-version: '8'
+      commit-hash: ${{ github.event.client_payload.commit }}
+      build-version: ${{ github.event.client_payload.project_version }}
+    secrets: inherit

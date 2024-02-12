@@ -11,6 +11,28 @@
     <description>Octopus VCS Facade integration</description>
     <packaging>atlassian-plugin</packaging>
 
+    <url>https://octopusden.org</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/octopusden/octopus-jira-vcs-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:octopusden/octopus-jira-vcs-plugin.git</developerConnection>
+        <url>https://github.com/octopusden/octopus-jira-vcs-plugin</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>octopus</id>
+            <name>octopus</name>
+        </developer>
+    </developers>
+
     <parent>
         <groupId>org.octopusden.octopus</groupId>
         <artifactId>octopus-parent</artifactId>
