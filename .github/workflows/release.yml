@@ -1,4 +1,4 @@
-name: Release Maven Hybrid
+name: Maven Release
 
 on:
   repository_dispatch:
