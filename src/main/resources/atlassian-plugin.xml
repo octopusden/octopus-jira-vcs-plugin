@@ -39,4 +39,21 @@
         <interface>org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService</interface>
     </component>
 
+    <web-panel name="VCS Web Panel"
+               i18n-name-key="vcs-web-panel.name"
+               key="octopus-jira-vcs-vcs-web-panel"
+               location="atl.jira.view.issue.right.context"
+               weight="100">
+        <description key="octopus-jira-vcs-vcs-panel.description">Version Control System Web Panel</description>
+        <label>Version Control System</label>
+        <resource name="view" type="velocity" location="/templates/ui/vcs-panel.vm"/>
+        <condition class="org.octopusden.octopus.jira.vcs.ui.vcspanel.VcsPanelConfiguration" />
+        <context-provider class="org.octopusden.octopus.jira.vcs.ui.vcspanel.VcsPanelContextProvider"/>
+    </web-panel>
+
+    <web-resource name="VCS Panel" key="octopus-jira-vcs-vcs-panel">
+        <resource name="vcs-panel.js" type="download" location="/js/vcs-panel.js" />
+        <context>jira.view.issue</context>
+    </web-resource>
+
 </atlassian-plugin>

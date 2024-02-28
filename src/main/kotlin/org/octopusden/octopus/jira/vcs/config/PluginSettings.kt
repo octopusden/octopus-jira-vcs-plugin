@@ -39,6 +39,8 @@ class PluginSettings(pluginSettingsFactory: PluginSettingsFactory) {
 
     fun getDate(key: PluginProperty, format: SimpleDateFormat): Date = format.parse(getString(key))
 
+    fun getBoolean(property: PluginProperty): Boolean = getString(property).toBoolean()
+
     private fun getProperty(propertyName: String): String {
         return properties.getProperty(propertyName)
             ?: throw JiraApplicationException("Property [$propertyName] must be defined in the property file [$PROPERTIES_FILE_NAME]")
