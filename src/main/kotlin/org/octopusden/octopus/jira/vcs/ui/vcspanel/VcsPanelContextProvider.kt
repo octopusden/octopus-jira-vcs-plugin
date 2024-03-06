@@ -18,7 +18,7 @@ class VcsPanelContextProvider(
         (jiraHelper.contextParams["issue"] as? Issue)
             ?.key
             ?.let { issueKey ->
-                val vcsInformation = vcsFacadeService.getVcsInformation(issueKey)
+                val vcsInformation = vcsFacadeService.getSummary(issueKey)
                 contextMap["branches"] = vcsInformation.branches
                 contextMap["commits"] = vcsInformation.commits
                 contextMap["pullRequests"] = vcsInformation.pullRequests

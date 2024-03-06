@@ -1,17 +1,16 @@
-##$webResourceManager.requireResource("org.octopusden.octopus.jira.jira-vcs-plugin:vcs-panel")
-
+#parse("/ui/vcs-panel/livestamp.vm")
 <div class="mod-content">
     <ul id="devstatus-container" class="item-details dev-status-container">
         <ul class="item-details status-panels devstatus-entry">
-            <li class="status-panel hidden js-has-data" id="branch-status-panel" data-module="BranchModule"></li>
             <li class="status-panel#if($branches.size == 0)hidden#end js-has-data" id="branch-status-panel"
                 data-module="BranchModule">
                 <dl>
                     <dt>
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div class="summary-content"><a class="summary"
-                                                                href="$jiraBaseUrl/browse/$issueKey?vcsDetailDialog=branch"
+                                <div class="summary-content">
+                                    <a id="view-branches" class="summary"
+                                       href="$jiraBaseUrl/VcsPanelViewBranches!default.jspa?issueKey=$issueKey"
                                                                 title="Branches related to $issueKey"><span
                                         class="count">$branches.size</span> branch#if($commits.size > 1)es#end</a></div>
                             </div>
@@ -20,44 +19,31 @@
                     <dd class="sub-text">
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div>Updated
-                                    <time class="livestamp date user-tz allow-future" data-datetime-format="fullAge"
-                                          datetime="$dateTool.format('medium',$branches.updated)"
-                                          title="$dateTool.format('medium',$branches.updated)">$dateTool.format(
-                                        'medium',$branches.updated)
-                                    </time>
-                                </div>
+                                <div>Updated #livestamp($branches.updated)</div>
                             </div>
                         </div>
                     </dd>
                 </dl>
             </li>
-
-
             <li class="status-panel#if($commits.size == 0)hidden#end js-has-data" id="commit-status-panel"
                 data-module="CommitModule">
                 <dl>
                     <dt>
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div class="summary-content"><a class="summary"
-                                                                href="$jiraBaseUrl/browse/$issueKey?vcsDetailDialog=commits"
+                                <div class="summary-content">
+                                    <a id="view-commits" class="summary"
+                                       href="$jiraBaseUrl/VcsPanelViewCommits!default.jspa?issueKey=$issueKey"
                                                                 title="Commits related to $issueKey"><span
-                                        class="count">$commits.size</span> commit#if($commits.size > 1)s#end</a></div>
+                                            class="count">$commits.size</span> commit#if($commits.size > 1)s#end</a>
+                                </div>
                             </div>
                         </div>
                     </dt>
                     <dd class="sub-text">
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div>Latest
-                                    <time class="livestamp date user-tz allow-future" data-datetime-format="fullAge"
-                                          datetime="$dateTool.format('medium',$commits.latest)"
-                                          title="$dateTool.format('medium',$commits.latest)">$dateTool.format(
-                                        'medium',$commits.latest)
-                                        18:47
-                                    </time>
-                                </div>
+                                <div>Latest #livestamp($commits.latest)</div>
                             </div>
                         </div>
                     </dd>
@@ -69,12 +55,17 @@
                     <dt>
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div class="summary-content"><a class="summary"
-                                                                href="$jiraBaseUrl/browse/$issueKey?vcsDetailDialog=pullrequests"
+                                <div class="summary-content">
+                                    <a id="view-pull-requests" class="summary"
+                                       href="$jiraBaseUrl/VcsPanelViewPullRequests!default.jspa?issueKey=$issueKey"
                                                                 title="Pull requests related to $issueKey"><span
-                                        class="count">$pullRequests.size</span> pull request#if($pullRequests.size > 1)
-                                    s#end</a> <span
-                                        class="aui-lozenge aui-lozenge-overflow aui-lozenge-subtle aui-lozenge-$pullRequests.status.style pullrequest-state">$pullRequests.status</span>
+                                            class="count">$pullRequests.size</span> pull
+                                        request#if($pullRequests.size > 1)s#end</a>
+                                    #if($pullRequests.status)
+                                        <span class="aui-lozenge aui-lozenge-overflow aui-lozenge-subtle
+                                    aui-lozenge-$pullRequests.status.style pullrequest-state">$pullRequests.status
+                                        </span>
+                                    #end
                                 </div>
                             </div>
                         </div>
@@ -82,13 +73,7 @@
                     <dd class="sub-text">
                         <div class="rolling-container sliding-container" style="height: auto;">
                             <div class="rolling-content">
-                                <div>Updated
-                                    <time class="livestamp date user-tz allow-future" data-datetime-format="fullAge"
-                                          datetime="$dateTool.format('medium',$pullRequests.updated)"
-                                          title="$dateTool.format('medium',$pullRequests.updated)">$dateTool.format(
-                                        'medium',$pullRequests.updated)
-                                    </time>
-                                </div>
+                                <div>Updated #livestamp($pullRequests.updated)</div>
                             </div>
                         </div>
                     </dd>

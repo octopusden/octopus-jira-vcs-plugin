@@ -1,0 +1,43 @@
+#parse("/ui/vcs-panel/repository.vm")
+#parse("/ui/vcs-panel/livestamp.vm")
+#parse("/ui/vcs-panel/vcs-user.vm")
+<h2>$issueKey: $commits.size unique commits</h2>
+<div class="devstatus-dialog-content">
+    <div class="form-body" style="min-height: 400px; max-height: 753px;">
+        <div class="status-loading" style="display: none;"></div>
+        <div class="detail-content-container">
+            #foreach($repository in $commits.repositories)
+                <div class="detail-commits-container has-files" data-repository-index="0">
+                    #repository( $repository )
+                    <div class="devstatus-detail-table commits-table">
+                        <table class="aui">
+                            <thead>
+                            <tr>
+                                <th class="author cell-type-collapsed">Author</th>
+                                <th class="changeset cell-type-collapsed">Commit</th>
+                                <th class="message">Message</th>
+                                <th class="timestamp">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($commit in $repository.commits)
+                                <tr data-changesetid="$commit.sha"
+                                    class="commitrow" data-commit-index="0">
+                                    <td class="author">#vcsUser($commit.author) </td>
+                                    <td class="changeset">
+                                        <a class="changesetid" href="$commit.url">$commit.sha.substring(0, 11)</a>
+                                    </td>
+                                    <td class="message">
+                                        <span class="ellipsis" title="$commit.message">$commit.message</span>
+                                    </td>
+                                    <td class="timestamp">#livestamp($commit.date)</td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            #end
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+#macro(vcsUser $user)
+<span>
+    <div class="vcs-user">
+        <span class="extra-content-in-title fade" title="$user.name" id="simple-tooltip">
+            <img class="author-avatar" src="$user.avatar">
+        </span>
+        #if($user.approved)
+            <span class="approved">✓</span>
+        #end
+    </div>
+</span>
+#end

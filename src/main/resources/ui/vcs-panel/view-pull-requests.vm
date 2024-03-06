@@ -1,0 +1,94 @@
+#parse("/ui/vcs-panel/vcs-user.vm")
+#parse("/ui/vcs-panel/livestamp.vm")
+<h2>$issueKey: $pullRequests.size() pull request#if ($pullRequests.size() > 1)s#end</h2>
+<div class="devstatus-dialog-content">
+    <div class="form-body" style="min-height: 400px; max-height: 750px;">
+        <div class="status-loading" style="display: none;"></div>
+        <div class="detail-content-container">
+            <div class="detail-pullrequests-container">
+                <div class="devstatus-detail-table pullrequests-table">
+                    <table class="aui">
+                        <thead>
+                        <tr>
+                            <th class="pullrequest-id">ID</th>
+                            <th class="title">Title</th>
+                            <th class="destination">Target</th>
+                            <th class="state">Status</th>
+                            <th class="author">Author</th>
+                            <th class="reviewer">Reviewer</th>
+                            <th class="last-updated">Updated</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #set($pullRequestCount = 0)
+                            #foreach($pullRequest in $pullRequests)
+                                #set($pullRequestCount = $pullRequestCount + 1)
+                            <tr class="pullrequest-row">
+                                <td class="pullrequest-id"><a class="pullrequest-link"
+                                                              href="$pullRequest.url">$pullRequest.id</a>
+                                </td>
+                                <td class="title"><a class="pullrequest-link ellipsis"
+                                                     title="$pullRequest.title"
+                                                     href="$pullRequest.url">$pullRequest.title</a>
+                                </td>
+                                <td class="destination"><span
+                                        class="branch-name aui-lozenge aui-lozenge-subtle ellipsis"
+                                        title="master">$pullRequest.target</span></td>
+                                <td class="state"><span
+                                        class="aui-lozenge aui-lozenge-overflow aui-lozenge-subtle aui-lozenge-$pullRequest.status.style pullrequest-state">$pullRequest.status</span>
+                                </td>
+                                <td class="author">#vcsUser($pullRequest.author)</td>
+                                <td class="reviewer">
+                                    <div class="reviewer-container">
+                                        #set( $reviewersForEachCount = 0 )
+                                        #foreach($reviewer in $pullRequest.reviewers)
+                                            #set( $reviewersForEachCount = $reviewersForEachCount + 1 )
+                                            #vcsUser($reviewer)
+                                            #if($reviewersForEachCount > 1 && $pullRequest.reviewers.size() > 3)
+                                                #break
+                                            #end
+                                        #end
+                                        #set ($extraReviewersSize = $pullRequest.reviewers.size() - $reviewersForEachCount)
+                                        #if($extraReviewersSize > 0)
+                                            <span class="aui-badge extrareviewers-tooltip reviewers-link"
+                                                  data-aui-trigger
+                                                  aria-controls="inline-dialog-extrareviewers-tooltip-$pullRequestCount">+$extraReviewersSize
+                                                    </span>
+                                            #*
+                                            <aui-inline-dialog id="inline-dialog-extrareviewers-tooltip-$pullRequestCount"
+                                                               responds-to="hover" alignment="top left">
+                                                <div class="reviewer">
+                                                    <div class="reviewer-container">
+                                                        <table class="aui">
+                                                            <tbody>
+                                                                #set($extraReviewersForEachCount = 0)
+                                                                #foreach($reviewer in $pullRequest.reviewers)
+                                                                    #set($extraReviewersForEachCount = $extraReviewersForEachCount + 1)
+                                                                    #if($extraReviewersForEachCount > $reviewersForEachCount)
+                                                                        <tr>
+                                                                            <td class="reviewer-avatar">#vcsUser($reviewer)</td>
+                                                                            <td class="reviewer-name">
+                                                                                <span title="$reviewer.name">$reviewer.name</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    #end
+                                                                #end
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </aui-inline-dialog>
+                                            *#
+                                        #end
+                                    </div>
+                                </td>
+                                <td class="last-updated">#livestamp($pullRequest.updated)</td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
