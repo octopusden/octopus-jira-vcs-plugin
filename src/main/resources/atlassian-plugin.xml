@@ -5,7 +5,7 @@
         <vendor name="Octopus" url="https://octopusden.org"/>
     </plugin-info>
 
-    <component-import key="pluginSettingsFactory"
+    <component-import key="octopus-jira-vcs.plugin-settings-factory"
                       interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
 
     <resource type="i18n" name="i18n" location="/"/>
