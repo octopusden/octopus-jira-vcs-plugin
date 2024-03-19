@@ -1,6 +1,6 @@
 #parse("/ui/vcs-panel/repository.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
-<h2>$issueKey: $branches.size branch#if($branches.size > 1)es#end</h2>
+<h2>$issueKey: $repositoryBranches.size branch#if($repositoryBranches.size > 1)es#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 750px;">
         <div class="status-loading" style="display: none;"></div>
@@ -16,19 +16,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                            #foreach($repository in $branches.repositories) #foreach($branch in $repository.branches)
-                            <tr class="branch-row">
-                                <td class="repository">#repository($repository)</td>
-                                <td class="branch">
-                                    <div class="branch-name"><span
-                                            class="aui-icon aui-icon-small aui-iconfont-devtools-branch-small"></span><a
-                                            class="branch-link"
-                                            href="$branch.url"
-                                            title="$branch.name">$branch.name</a></div>
-                                </td>
-                                <td class="last-updated">#livestamp($branch.updated)</td>
-                            </tr>
-                            #end #end
+                            #foreach($repository in $repositoryBranches.repositories)
+                                #foreach($branch in $repository.entities)
+                                    <tr class="branch-row">
+                                        <td class="repository">#repository($repository)</td>
+                                        <td class="branch">
+                                            <div class="branch-name"><span
+                                                    class="aui-icon aui-icon-small aui-iconfont-devtools-branch-small"></span><a
+                                                    class="branch-link"
+                                                    href="$branch.url"
+                                                    title="$branch.name">$branch.name</a></div>
+                                        </td>
+                                        <td class="last-updated">#livestamp($branch.updated)</td>
+                                    </tr>
+                                #end
+                            #end
                         </tbody>
                     </table>
                 </div>

@@ -1,11 +1,11 @@
 package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
+import java.util.Date
 import org.octopusden.octopus.vcsfacade.client.VcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.impl.ClassicVcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 class VcsFacadeServiceImpl(
     private val vcsFacadeClientParametersProvider: VcsFacadeClientParametersProvider
@@ -34,16 +34,21 @@ class VcsFacadeServiceImpl(
             )
         }
 
-    override fun getCommits(issueKey: String): VcsFacadeService.Commits =
+    override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
         with(vcsFacadeClient.findCommitsByIssueKey(issueKey)) {
-            val repositoryCommits = this.groupBy { c -> c.vcsUrl }.map { (vcsUrl, commits) ->
-                    VcsFacadeService.RepositoryCommits(vcsUrl.vcsUrlToRepoName(), vcsUrl, null, commits.map { c ->
-                        VcsFacadeService.Commit(
-                            c.id, c.link, c.message, c.date, VcsFacadeService.Author(c.authorAvatarUrl, c.author)
-                        )
-                    })
+            val repositoryCommits = groupBy { c -> c.vcsUrl }
+                .map { (vcsUrl, commits) ->
+                    VcsFacadeService.RepositoryEntities(
+                        vcsUrl,
+                        //ToDo 'repository.avatar'
+                        null,
+                        commits.map { c ->
+                            VcsFacadeService.Commit(
+                                c.id, c.link, c.message, c.date, VcsFacadeService.Author(c.authorAvatarUrl, c.author)
+                            )
+                        })
                 }
-            VcsFacadeService.Commits(size, repositoryCommits)
+            VcsFacadeService.Repositories(size, repositoryCommits)
         }
 
     override fun getPullRequests(issueKey: String): Collection<VcsFacadeService.PullRequest> =
@@ -53,9 +58,11 @@ class VcsFacadeServiceImpl(
                     pr.id,
                     pr.link,
                     pr.title,
+                    //ToDo 'creator' (author)
                     VcsFacadeService.Author(
                         pr.assignee.firstOrNull()?.avatarUrl, pr.assignee.firstOrNull()?.name ?: "Joe Doe"
                     ),
+                    //ToDo 'approved'
                     pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.name, r.avatarUrl, false) },
                     VcsFacadeService.IssuePullRequestSummary.PullRequestStatus.valueOf(pr.status.name),
                     pr.updatedAt,
@@ -64,18 +71,17 @@ class VcsFacadeServiceImpl(
             }
         }
 
-    override fun getBranches(issueKey: String): VcsFacadeService.Branches =
+    override fun getBranches(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Branch> =
         with(vcsFacadeClient.findBranchesByIssueKey(issueKey)) {
             val repositoryBranches = this.groupBy { b -> b.vcsUrl }.map { (vcsUrl, branches) ->
-                VcsFacadeService.RepositoryBranches(vcsUrl,
+                VcsFacadeService.RepositoryEntities(
                     vcsUrl,
-                    "",
+                    //ToDo 'repository.avatar'
+                    null,
                     branches.map { b -> VcsFacadeService.Branch(b.name, b.link, Date()) })
             }
-            VcsFacadeService.Branches(this.size, repositoryBranches)
+            VcsFacadeService.Repositories(this.size, repositoryBranches)
         }
-
-    private fun String.vcsUrlToRepoName(): String = substring(lastIndexOf("/") + 1, indexOf(".git"))
 
     private fun getClient(): VcsFacadeClient =
         ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also { log.info("Init VCS Facade API client") }

@@ -35,11 +35,11 @@ public class VcsDialogAction extends AbstractIssueSelectAction {
         return dateTool;
     }
 
-    public VcsFacadeService.Commits getCommits() {
+    public VcsFacadeService.Repositories<VcsFacadeService.Commit> getRepositoryCommits() {
         return vcsFacadeService.getCommits(issueKey);
     }
 
-    public VcsFacadeService.Branches getBranches() {
+    public VcsFacadeService.Repositories<VcsFacadeService.Branch> getRepositoryBranches() {
         return vcsFacadeService.getBranches(issueKey);
     }
 

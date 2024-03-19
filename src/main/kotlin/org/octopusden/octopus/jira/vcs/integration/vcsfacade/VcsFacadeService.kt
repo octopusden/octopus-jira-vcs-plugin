@@ -5,9 +5,9 @@ import java.util.Date
 interface VcsFacadeService {
     fun updateConnection()
     fun getSummary(issueKey: String): IssueVcsSummary
-    fun getCommits(issueKey: String): Commits
+    fun getCommits(issueKey: String): Repositories<Commit>
     fun getPullRequests(issueKey: String): Collection<PullRequest>
-    fun getBranches(issueKey: String): Branches
+    fun getBranches(issueKey: String): Repositories<Branch>
 
     data class IssueVcsSummary(
         val branches: IssueBranchSummary, val commits: IssueCommitSummary, val pullRequests: IssuePullRequestSummary
@@ -25,12 +25,14 @@ interface VcsFacadeService {
     data class IssueCommitSummary(val size: Int, val latest: Date?)
     data class Commit(val sha: String, val url: String, val message: String, val date: Date, val author: Author)
     data class Author(val avatar: String?, val name: String)
-    data class RepositoryCommits(val name: String, val url: String, val avatar: String?, val commits: Collection<Commit>)
-    data class RepositoryBranches(val name: String, val url: String, val avatar: String, val branches: Collection<Branch>)
-    data class Commits(val size: Int, val repositories: Collection<RepositoryCommits>)
+    data class RepositoryEntities<T : Any>(val url: String, val avatar: String?, val entities: Collection<T>) {
+        val name: String
+            get() = url.substring(url.lastIndexOf("/") + 1, url.indexOf(".git"))
+    }
+
+    data class Repositories<T : Any>(val size: Int, val values: Collection<RepositoryEntities<T>>)
     data class Reviewer(val name: String, val avatar: String?, val approved: Boolean)
     data class Branch(val name: String, val url: String, val updated: Date)
-    data class Branches(val size: Int, val repositories: Collection<RepositoryBranches>)
 
     data class PullRequest(
         val id: Long,

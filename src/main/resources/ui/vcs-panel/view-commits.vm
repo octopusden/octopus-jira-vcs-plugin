@@ -1,12 +1,12 @@
 #parse("/ui/vcs-panel/repository.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
 #parse("/ui/vcs-panel/vcs-user.vm")
-<h2>$issueKey: $commits.size unique commits</h2>
+<h2>$issueKey: $repositoryCommits.size unique commits</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 753px;">
         <div class="status-loading" style="display: none;"></div>
         <div class="detail-content-container">
-            #foreach($repository in $commits.repositories)
+            #foreach($repository in $repositoryCommits.values)
                 <div class="detail-commits-container has-files" data-repository-index="0">
                     #repository( $repository )
                     <div class="devstatus-detail-table commits-table">
@@ -20,7 +20,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                #foreach($commit in $repository.commits)
+                                #foreach($commit in $repository.entities)
                                 <tr data-changesetid="$commit.sha"
                                     class="commitrow" data-commit-index="0">
                                     <td class="author">#vcsUser($commit.author) </td>
