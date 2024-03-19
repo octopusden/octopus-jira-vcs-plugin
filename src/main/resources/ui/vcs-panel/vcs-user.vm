@@ -2,7 +2,11 @@
 <span>
     <div class="vcs-user">
         <span class="extra-content-in-title fade" title="$user.name" id="simple-tooltip">
-            <img class="author-avatar" src="$user.avatar">
+            #if($user.avatar)
+                <img class="author-avatar" src="$user.avatar">
+            #else
+                <img class="author-avatar" src="$req.contextPath/download/resources/org.octopusden.octopus.jira.jira-vcs-plugin:octopus-jira-vcs.vcs-panel/img/default-person.svg">
+            #end
         </span>
         #if($user.approved)
             <span class="approved">✓</span>

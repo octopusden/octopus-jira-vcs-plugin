@@ -5,7 +5,11 @@
             <div class="project-avatar" title="$repository.name">
                 <span class="aui-avatar aui-avatar-small aui-avatar-project fusion-avatar-project">
                     <span class="aui-avatar-inner">
-                        <img src="$repository.avatar">
+                        #if ($repository.avatar)
+                            <img src="$repository.avatar">
+                        #else
+                            <img src="$req.contextPath/download/resources/org.octopusden.octopus.jira.jira-vcs-plugin:octopus-jira-vcs.vcs-panel/img/default-project.svg">
+                        #end
                     </span>
                 </span>
             </div>
