@@ -3,8 +3,8 @@
 <head>
     <title>Internal error</title>
     <meta name="decorator" content="jira.admin" />
-    <meta name="admin.active.section" content="admin_plugins_menu/octopus-jira-vcs-section"/>
-    <meta name="admin.active.tab" content="octopus-jira-vcs-settings"/>
+    <meta name="admin.active.section" content="admin_plugins_menu/octopus-jira-vcs.section"/>
+    <meta name="admin.active.tab" content="octopus-jira-vcs.settings"/>
 </head>
 <body>
     <div>
