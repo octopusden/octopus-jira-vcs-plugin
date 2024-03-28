@@ -27,7 +27,7 @@ interface VcsFacadeService {
     data class Author(val avatar: String?, val name: String)
     data class RepositoryEntities<T : Any>(val url: String, val avatar: String?, val entities: Collection<T>) {
         val name: String
-            get() = url.substring(url.lastIndexOf("/") + 1, url.indexOf(".git"))
+            get() = url.substring(url.lastIndexOf("/") + 1)
     }
 
     data class Repositories<T : Any>(val size: Int, val values: Collection<RepositoryEntities<T>>)

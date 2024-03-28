@@ -16,7 +16,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            #foreach($repository in $repositoryBranches.repositories)
+                            #foreach($repository in $repositoryBranches.values)
                                 #foreach($branch in $repository.entities)
                                     <tr class="branch-row">
                                         <td class="repository">#repository($repository)</td>
