@@ -10,7 +10,6 @@
                     <table class="aui">
                         <thead>
                         <tr>
-                            <th class="pullrequest-id">ID</th>
                             <th class="title">Title</th>
                             <th class="destination">Target</th>
                             <th class="state">Status</th>
@@ -24,9 +23,6 @@
                             #foreach($pullRequest in $pullRequests)
                                 #set($pullRequestCount = $pullRequestCount + 1)
                             <tr class="pullrequest-row">
-                                <td class="pullrequest-id"><a class="pullrequest-link"
-                                                              href="$pullRequest.url">$pullRequest.id</a>
-                                </td>
                                 <td class="title"><a class="pullrequest-link ellipsis"
                                                      title="$pullRequest.title"
                                                      href="$pullRequest.url">$pullRequest.title</a>

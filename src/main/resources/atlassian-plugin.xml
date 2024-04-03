@@ -45,7 +45,7 @@
                location="atl.jira.view.issue.right.context"
                weight="100">
         <description key="octopus-jira-vcs.vcs-panel.description">Version Control System Web Panel</description>
-        <label>Version Control System</label>
+        <label>Version Control System (alpha)</label>
         <resource name="view" type="velocity" location="/ui/vcs-panel/vcs-panel.vm"/>
         <condition class="org.octopusden.octopus.jira.vcs.ui.vcspanel.VcsPanelConfiguration" />
         <context-provider class="org.octopusden.octopus.jira.vcs.ui.vcspanel.VcsPanelContextProvider"/>

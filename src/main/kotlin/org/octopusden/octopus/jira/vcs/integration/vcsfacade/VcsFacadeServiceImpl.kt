@@ -2,8 +2,6 @@ package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
 import java.util.Date
 import org.octopusden.octopus.vcsfacade.client.VcsFacadeClient
-import org.octopusden.octopus.vcsfacade.client.common.dto.Repository
-import org.octopusden.octopus.vcsfacade.client.common.dto.User
 import org.octopusden.octopus.vcsfacade.client.impl.ClassicVcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider
 import org.slf4j.Logger
@@ -42,10 +40,10 @@ class VcsFacadeServiceImpl(
                 .map { (repository, commits) ->
                     VcsFacadeService.RepositoryEntities(
                         repository.link,
-                        repository.getAvatar(),
+                        repository.avatar,
                         commits.map { c ->
                             VcsFacadeService.Commit(
-                                c.id, c.link, c.message, c.date, VcsFacadeService.Author(c.author.getAvatar(), c.author.name)
+                                c.id, c.link, c.message, c.date, VcsFacadeService.Author(c.author.avatar, c.author.name)
                             )
                         })
                 }
@@ -56,12 +54,10 @@ class VcsFacadeServiceImpl(
         with(vcsFacadeClient.findPullRequestsByIssueKey(issueKey)) {
             this.map { pr ->
                 VcsFacadeService.PullRequest(
-                    pr.index,
                     pr.link,
                     pr.title,
-                    VcsFacadeService.Author(pr.author.getAvatar(), pr.author.name),
-                    //ToDo 'approved'
-                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.name, r.getAvatar(), false) },
+                    VcsFacadeService.Author(pr.author.avatar, pr.author.name),
+                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) },
                     VcsFacadeService.IssuePullRequestSummary.PullRequestStatus.valueOf(pr.status.name),
                     pr.updatedAt,
                     pr.target
@@ -74,16 +70,11 @@ class VcsFacadeServiceImpl(
             val repositoryBranches = this.groupBy { b -> b.repository }.map { (repository, branches) ->
                 VcsFacadeService.RepositoryEntities(
                     repository.link,
-                    repository.getAvatar(),
+                    repository.avatar,
                     branches.map { b -> VcsFacadeService.Branch(b.name, b.link, Date()) })
             }
             VcsFacadeService.Repositories(this.size, repositoryBranches)
         }
-
-    // ToDo remove after correct VCS Facade/Client response
-    private fun Repository.getAvatar() = this.avatar.ifBlank { null }
-    // ToDo remove after correct VCS Facade/Client response
-    private fun User.getAvatar() = this.avatar.ifBlank { null }
 
     private fun getClient(): VcsFacadeClient =
         ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also { log.info("Init VCS Facade API client") }

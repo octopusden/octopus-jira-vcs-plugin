@@ -35,7 +35,6 @@ interface VcsFacadeService {
     data class Branch(val name: String, val url: String, val updated: Date)
 
     data class PullRequest(
-        val id: Long,
         val url: String,
         val title: String,
         val author: Author,

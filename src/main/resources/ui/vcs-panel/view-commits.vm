@@ -1,7 +1,7 @@
 #parse("/ui/vcs-panel/repository.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
 #parse("/ui/vcs-panel/vcs-user.vm")
-<h2>$issueKey: $repositoryCommits.size unique commits</h2>
+<h2>$issueKey: $repositoryCommits.size unique commit#if($repositoryCommits.size > 1)s#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 753px;">
         <div class="status-loading" style="display: none;"></div>
