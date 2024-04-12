@@ -3,11 +3,14 @@ package org.octopusden.octopus.jira.vcs.ui;
 import com.atlassian.jira.web.action.issue.AbstractIssueSelectAction;
 import org.apache.velocity.tools.generic.DateTool;
 import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
 public class VcsDialogAction extends AbstractIssueSelectAction {
 
+    public static final Logger LOG = LoggerFactory.getLogger(VcsDialogAction.class);
     private final String issueKey;
     private final DateTool dateTool = new DateTool();
     private final VcsFacadeService vcsFacadeService;
@@ -36,14 +39,17 @@ public class VcsDialogAction extends AbstractIssueSelectAction {
     }
 
     public VcsFacadeService.Repositories<VcsFacadeService.Commit> getRepositoryCommits() {
+        LOG.info("Get Commits for '{}'", issueKey);
         return vcsFacadeService.getCommits(issueKey);
     }
 
     public VcsFacadeService.Repositories<VcsFacadeService.Branch> getRepositoryBranches() {
+        LOG.info("Get Branches for '{}'", issueKey);
         return vcsFacadeService.getBranches(issueKey);
     }
 
     public Collection<VcsFacadeService.PullRequest> getPullRequests() {
+        LOG.info("Get Pull Requests for '{}'", issueKey);
         return vcsFacadeService.getPullRequests(issueKey);
     }
 }

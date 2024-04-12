@@ -79,7 +79,7 @@ class VcsFacadeServiceImpl(
         }
 
     private fun getClient(): VcsFacadeClient =
-        ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also { log.info("Init VCS Facade API client") }
+        ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also { log.info("Init VCS Facade API client, URL: {}", vcsFacadeClientParametersProvider.getApiUrl()) }
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(VcsFacadeServiceImpl::class.java)
