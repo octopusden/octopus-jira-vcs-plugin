@@ -4,13 +4,15 @@ import com.atlassian.jira.issue.Issue
 import com.atlassian.jira.plugin.webfragment.contextproviders.AbstractJiraContextProvider
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper
 import com.atlassian.jira.user.ApplicationUser
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport
 import com.atlassian.plugin.webresource.WebResourceUrlProvider
+import javax.inject.Inject
 import org.apache.velocity.tools.generic.DateTool
 import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService
 
-class VcsPanelContextProvider(
+class VcsPanelContextProvider @Inject constructor(
     private val vcsFacadeService: VcsFacadeService,
-    private val webResourceUrlProvider: WebResourceUrlProvider
+    @ComponentImport private val webResourceUrlProvider: WebResourceUrlProvider
 ) : AbstractJiraContextProvider() {
 
     override fun getContextMap(user: ApplicationUser, jiraHelper: JiraHelper): MutableMap<String, Any> {

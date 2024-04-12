@@ -5,11 +5,7 @@
         <vendor name="Octopus" url="https://octopusden.org"/>
     </plugin-info>
 
-    <component-import key="octopus-jira-vcs.plugin-settings-factory"
-                      interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
-
     <resource type="i18n" name="i18n" location="/"/>
-    <component key="octopus-jira-vcs.plugin-settings" class="org.octopusden.octopus.jira.vcs.config.PluginSettings"/>
 
     <web-section key="octopus-jira-vcs.admin-section" location="admin_plugins_menu" name="VCS Facade" weight="90">
         <label key="VCS Panel"/>
@@ -30,14 +26,6 @@
             </action>
         </actions>
     </webwork1>
-
-    <component key="octopus-jira-vcs.vcs-facade-service.client-parameters-provider" class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.JiraVcsPluginVcsFacadeClientParametersProvider">
-        <interface>org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider</interface>
-    </component>
-
-    <component key="octopus-jira-vcs.vcs-facade-service" class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeServiceImpl">
-        <interface>org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService</interface>
-    </component>
 
     <web-panel name="VCS Web Panel"
                i18n-name-key="vcs-web-panel.name"
