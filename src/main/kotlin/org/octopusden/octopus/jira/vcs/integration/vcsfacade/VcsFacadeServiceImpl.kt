@@ -20,7 +20,7 @@ class VcsFacadeServiceImpl(
     }
 
     override fun getSummary(issueKey: String): VcsFacadeService.IssueVcsSummary =
-        with(vcsFacadeClient.findByIssueKey(issueKey)) {
+        with(vcsFacadeClient.findByIssueKey(issueKey.also { log.info("Get VCS Summary for '{}'", it) })) {
             VcsFacadeService.IssueVcsSummary(
                 VcsFacadeService.IssueBranchSummary(
                     branches.size, branches.updated
