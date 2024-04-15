@@ -1,6 +1,6 @@
 #parse("/ui/vcs-panel/vcs-user.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
-<h2>$issueKey: $pullRequests.size() pull request#if ($pullRequests.size() > 1)s#end</h2>
+<h2>$key: $pullRequests.size() pull request#if ($pullRequests.size() > 1)s#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 750px;">
         <div class="status-loading" style="display: none;"></div>

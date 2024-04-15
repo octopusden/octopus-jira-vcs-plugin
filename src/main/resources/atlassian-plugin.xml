@@ -57,21 +57,21 @@
 
     <webwork1 key="octopus-jira-vcs.vcs-dialog.actions.view.branches" name="View Branches" class="java.lang.Object">
         <actions>
-            <action name="org.octopusden.octopus.jira.vcs.ui.VcsDialogAction" alias="VcsPanelViewBranches">
+            <action name="org.octopusden.octopus.jira.vcs.ui.BranchesDialogAction" alias="VcsPanelViewBranches">
                 <view name="input">/ui/vcs-panel/view-branches.vm</view>
             </action>
         </actions>
     </webwork1>
     <webwork1 key="octopus-jira-vcs.vcs-panel.actions.view.commits" name="View Commits" class="java.lang.Object">
         <actions>
-            <action name="org.octopusden.octopus.jira.vcs.ui.VcsDialogAction" alias="VcsPanelViewCommits">
+            <action name="org.octopusden.octopus.jira.vcs.ui.CommitsDialogAction" alias="VcsPanelViewCommits">
                 <view name="input">/ui/vcs-panel/view-commits.vm</view>
             </action>
         </actions>
     </webwork1>
     <webwork1 key="octopus-jira-vcs.vcs-panel.actions.view.pull-requests" name="View Pull Requests" class="java.lang.Object">
         <actions>
-            <action name="org.octopusden.octopus.jira.vcs.ui.VcsDialogAction" alias="VcsPanelViewPullRequests">
+            <action name="org.octopusden.octopus.jira.vcs.ui.PullRequestsDialogAction" alias="VcsPanelViewPullRequests">
                 <view name="input">/ui/vcs-panel/view-pull-requests.vm</view>
             </action>
         </actions>

@@ -37,7 +37,7 @@ class VcsFacadeServiceImpl(
         }
 
     override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
-        with(vcsFacadeClient.findCommitsByIssueKey(issueKey)) {
+        with(vcsFacadeClient.findCommitsByIssueKey(issueKey.also { log.info("Get Commits for '{}'", it) })) {
             val repositoryCommits = groupBy { c -> c.repository }
                 .map { (repository, commits) ->
                     VcsFacadeService.RepositoryEntities(
@@ -53,7 +53,7 @@ class VcsFacadeServiceImpl(
         }
 
     override fun getPullRequests(issueKey: String): Collection<VcsFacadeService.PullRequest> =
-        with(vcsFacadeClient.findPullRequestsByIssueKey(issueKey)) {
+        with(vcsFacadeClient.findPullRequestsByIssueKey(issueKey.also { log.info("Get Pull Requests for '{}'", it) })) {
             this.map { pr ->
                 VcsFacadeService.PullRequest(
                     pr.link,
@@ -68,7 +68,7 @@ class VcsFacadeServiceImpl(
         }
 
     override fun getBranches(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Branch> =
-        with(vcsFacadeClient.findBranchesByIssueKey(issueKey)) {
+        with(vcsFacadeClient.findBranchesByIssueKey(issueKey.also { log.info("Get Branches for '{}'", it) })) {
             val repositoryBranches = this.groupBy { b -> b.repository }.map { (repository, branches) ->
                 VcsFacadeService.RepositoryEntities(
                     repository.link,
