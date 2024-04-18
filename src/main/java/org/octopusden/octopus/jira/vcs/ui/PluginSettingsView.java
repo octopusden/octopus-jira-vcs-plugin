@@ -7,6 +7,7 @@ import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class PluginSettingsView extends AbstractViewSettings {
 
     private final VcsFacadeService vcsFacadeService;
 
+    @Inject
     public PluginSettingsView(PluginSettings pluginSettings, VcsFacadeService vcsFacadeService) {
         super(pluginSettings);
         this.vcsFacadeService = vcsFacadeService;

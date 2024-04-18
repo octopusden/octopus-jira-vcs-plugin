@@ -1,15 +1,19 @@
 package org.octopusden.octopus.jira.vcs.config
 
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory
-import org.octopusden.octopus.jira.exception.JiraApplicationException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
+import javax.inject.Inject
+import javax.inject.Named
+import org.octopusden.octopus.jira.exception.JiraApplicationException
 
 
 private const val PROPERTIES_FILE_NAME = "/plugin.properties"
 
-class PluginSettings(pluginSettingsFactory: PluginSettingsFactory) {
+@Named
+class PluginSettings @Inject constructor(@ComponentImport pluginSettingsFactory: PluginSettingsFactory) {
 
     private val properties = Properties().apply {
         PluginSettings::class.java.getResourceAsStream(PROPERTIES_FILE_NAME)

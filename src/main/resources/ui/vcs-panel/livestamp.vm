@@ -1,0 +1,4 @@
+#macro(livestamp $rawDate)
+#set($date = $dateTool.format('medium', $rawDate))
+<time class="livestamp date user-tz" data-datetime-format="longAge" datetime="$date" title="$date">$date</time>
+#end

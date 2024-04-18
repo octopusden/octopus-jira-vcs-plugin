@@ -55,7 +55,7 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 
         <octopus-jira-utils.version>2.0.10</octopus-jira-utils.version>
-        <octopus-vcs-facade.version>2.0.17</octopus-vcs-facade.version>
+        <octopus-vcs-facade.version>3.0.1</octopus-vcs-facade.version>
 
         <confluence.url></confluence.url>
         <confluence.username></confluence.username>
@@ -87,6 +87,34 @@
                                     <version>${jira.version}</version>
                                 </application>
                             </applications>
+                            <instructions>
+                                <Atlassian-Plugin-Key>${project.groupId}.${project.artifactId}</Atlassian-Plugin-Key>
+                                <Import-Package>
+                                    org.springframework.osgi.*;resolution:="optional",
+                                    org.eclipse.gemini.blueprint.*;resolution:="optional",
+                                    com.atlassian.plugin.osgi.bridge.external,
+                                    *;resolution:=optional
+                                </Import-Package>
+                            </instructions>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.atlassian.plugin</groupId>
+                        <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
+                        <version>2.1.13</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>atlassian-spring-scanner</goal>
+                                </goals>
+                                <!-- process-classes seems to be skipped if you are using scala
+                                     so perhaps use prepare-package -->
+                                <phase>process-classes</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Enable this to get build-time logging of annotations atlassian-spring-scanner-maven-plugin has noticed -->
+                            <verbose>false</verbose>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -375,6 +403,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.plugin</groupId>
+            <artifactId>atlassian-spring-scanner-annotation</artifactId>
             <scope>provided</scope>
         </dependency>
 

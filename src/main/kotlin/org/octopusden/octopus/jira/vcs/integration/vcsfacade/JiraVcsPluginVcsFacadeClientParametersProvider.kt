@@ -1,9 +1,11 @@
 package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
+import javax.inject.Named
 import org.octopusden.octopus.jira.vcs.config.PluginProperty
 import org.octopusden.octopus.jira.vcs.config.PluginSettings
 import org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider
 
+@Named
 class JiraVcsPluginVcsFacadeClientParametersProvider(private val pluginSettings: PluginSettings) :
     VcsFacadeClientParametersProvider {
     override fun getApiUrl(): String = pluginSettings.getString(PluginProperty.VCS_FACADE_API_URL)

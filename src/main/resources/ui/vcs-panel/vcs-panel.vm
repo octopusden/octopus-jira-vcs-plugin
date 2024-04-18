@@ -1,0 +1,95 @@
+#parse("/ui/vcs-panel/livestamp.vm")
+<div class="mod-content">
+    <ul id="devstatus-container" class="item-details dev-status-container">
+        <ul class="item-details status-panels devstatus-entry">
+            #if($branches.size > 0)
+                <li class="status-panel js-has-data" id="branch-status-panel" data-module="BranchModule">
+                    <dl>
+                        <dt>
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    <div class="summary-content">
+                                        <a id="view-branches" class="summary"
+                                           href="$jiraBaseUrl/VcsPanelViewBranches!default.jspa?issueKey=$issueKey"
+                                           title="Branches related to $issueKey"><span
+                                                class="count">$branches.size</span> branch#if($branches.size > 1)es#end
+                                        </a></div>
+                                </div>
+                            </div>
+                        </dt>
+                        <dd class="sub-text">
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    #if($branches.updated)
+                                        <div>Updated #livestamp($branches.updated)</div>
+                                    #end
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </li>
+            #end
+            #if($commits.size > 0)
+                <li class="status-panel js-has-data" id="commit-status-panel"
+                    data-module="CommitModule">
+                    <dl>
+                        <dt>
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    <div class="summary-content">
+                                        <a id="view-commits" class="summary"
+                                           href="$jiraBaseUrl/VcsPanelViewCommits!default.jspa?issueKey=$issueKey"
+                                           title="Commits related to $issueKey"><span
+                                                class="count">$commits.size</span> commit#if($commits.size > 1)s#end</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </dt>
+                        <dd class="sub-text">
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    #if($commits.latest)
+                                        <div>Latest #livestamp($commits.latest)</div>
+                                    #end
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </li>#end
+            #if($pullRequests.size > 0)
+                <li class="status-panel js-has-data" id="pullrequest-status-panel"
+                    data-module="PullRequestModule">
+                    <dl>
+                        <dt>
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    <div class="summary-content">
+                                        <a id="view-pull-requests" class="summary"
+                                           href="$jiraBaseUrl/VcsPanelViewPullRequests!default.jspa?issueKey=$issueKey"
+                                           title="Pull requests related to $issueKey"><span
+                                                class="count">$pullRequests.size</span> pull
+                                            request#if($pullRequests.size > 1)s#end</a>
+                                        #if($pullRequests.status)
+                                            <span class="aui-lozenge aui-lozenge-overflow aui-lozenge-subtle
+                                    aui-lozenge-$pullRequests.status.style pullrequest-state">$pullRequests.status
+                                            </span>
+                                        #end
+                                    </div>
+                                </div>
+                            </div>
+                        </dt>
+                        <dd class="sub-text">
+                            <div class="rolling-container sliding-container" style="height: auto;">
+                                <div class="rolling-content">
+                                    #if($pullRequests.updated)
+                                        <div>Updated #livestamp($pullRequests.updated)</div>
+                                    #end
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </li>
+            #end
+        </ul>
+    </ul>
+</div>
