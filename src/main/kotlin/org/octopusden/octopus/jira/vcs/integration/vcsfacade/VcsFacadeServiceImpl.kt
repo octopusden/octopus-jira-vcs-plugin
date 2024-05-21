@@ -28,7 +28,7 @@ class VcsFacadeServiceImpl(
                     commits.size, commits.latest
                 ), VcsFacadeService.IssuePullRequestSummary(
                     pullRequests.size, pullRequests.status?.let { pullRequestStatus ->
-                        VcsFacadeService.IssuePullRequestSummary.PullRequestStatus.valueOf(
+                        VcsFacadeService.IssuePullRequestSummary.Status.valueOf(
                             pullRequestStatus.name
                         )
                     }, pullRequests.updated
@@ -37,15 +37,24 @@ class VcsFacadeServiceImpl(
         }
 
     override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
-        with(vcsFacadeClient.findCommitsByIssueKey(issueKey.also { log.info("Get Commits for '{}'", it) })) {
-            val repositoryCommits = groupBy { c -> c.repository }
+        with(vcsFacadeClient.findCommitsWithFilesByIssueKey(issueKey.also {log.info("Get Commits for '{}'", it)})) {
+            val repositoryCommits = groupBy { c -> c.commit.repository }
                 .map { (repository, commits) ->
                     VcsFacadeService.RepositoryEntities(
                         repository.link,
                         repository.avatar,
                         commits.map { c ->
                             VcsFacadeService.Commit(
-                                c.id, c.link, c.message, c.date, VcsFacadeService.Author(c.author.avatar, c.author.name)
+                                c.commit.hash,
+                                c.commit.link,
+                                c.commit.message,
+                                c.commit.date,
+                                VcsFacadeService.Author(c.commit.author.avatar, c.commit.author.name),
+                                c.files.map { f ->
+                                    VcsFacadeService.FileChange(
+                                        VcsFacadeService.FileChange.Type.valueOf(f.type), f.link, f.path
+                                    )
+                                }
                             )
                         })
                 }
@@ -60,7 +69,7 @@ class VcsFacadeServiceImpl(
                     pr.title,
                     VcsFacadeService.Author(pr.author.avatar, pr.author.name),
                     pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) },
-                    VcsFacadeService.IssuePullRequestSummary.PullRequestStatus.valueOf(pr.status.name),
+                    VcsFacadeService.IssuePullRequestSummary.Status.valueOf(pr.status.name),
                     pr.updatedAt,
                     pr.target
                 )
@@ -79,7 +88,12 @@ class VcsFacadeServiceImpl(
         }
 
     private fun getClient(): VcsFacadeClient =
-        ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also { log.info("Init VCS Facade API client, URL: {}", vcsFacadeClientParametersProvider.getApiUrl()) }
+        ClassicVcsFacadeClient(vcsFacadeClientParametersProvider).also {
+            log.info(
+                "Init VCS Facade API client, URL: {}",
+                vcsFacadeClientParametersProvider.getApiUrl()
+            )
+        }
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(VcsFacadeServiceImpl::class.java)

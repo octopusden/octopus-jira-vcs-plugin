@@ -17,6 +17,7 @@
                                 <th class="changeset cell-type-collapsed">Commit</th>
                                 <th class="message">Message</th>
                                 <th class="timestamp">Date</th>
+                                <th class="filecount">Files</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -31,6 +32,35 @@
                                         <span class="ellipsis" title="$commit.message">$commit.message</span>
                                     </td>
                                     <td class="timestamp">#livestamp($commit.date)</td>
+                                    <td class="filecount"><a class="extra-content-in-title aui-expander-trigger" original-title="Click to show files" role="button" tabindex="0"
+                                                             aria-controls="${commit.sha}-files" id="regular-a11y-anchor-trigger">$commit.files.size() file#if($commit.files.size() > 1)s#end</a>
+                                    </td>
+                                </tr>
+                                <tr class="filerow">
+                                    <td colspan="5">
+                                        <div class="aui-expander-content" id="${commit.sha}-files">
+                                            #set( $filesForEachCount = 0 )
+                                            #foreach($file in $commit.files)
+                                                #set( $filesForEachCount = $filesForEachCount + 1 )
+                                                <div class="file">
+                                                    <div class="change">
+                                                        <div class="changetype"><span
+                                                                class="aui-lozenge aui-lozenge-$file.type.style aui-lozenge-subtle">$file.type</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="filename ellipsis"><a
+                                                            href="$file.url" title="$file.path">$file.path</a>
+                                                    </div>
+                                                </div>
+                                                #if($filesForEachCount > 5)
+                                                    #break
+                                                #end
+                                            #end
+                                            #if($filesForEachCount < $commit.files.size())
+                                                <a class="more-files-info" href="$commit.url">See more files in $repository.name</a>
+                                            #end
+                                        </div>
+                                    </td>
                                 </tr>
                                 #end
                             </tbody>
