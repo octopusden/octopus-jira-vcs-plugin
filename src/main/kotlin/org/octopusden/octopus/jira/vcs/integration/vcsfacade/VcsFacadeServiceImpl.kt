@@ -3,6 +3,7 @@ package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 import java.util.Date
 import javax.inject.Named
 import org.octopusden.octopus.vcsfacade.client.VcsFacadeClient
+import org.octopusden.octopus.vcsfacade.client.common.exception.VcsFacadeException
 import org.octopusden.octopus.vcsfacade.client.impl.ClassicVcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider
 import org.slf4j.Logger
@@ -19,7 +20,7 @@ class VcsFacadeServiceImpl(
         vcsFacadeClient = getClient()
     }
 
-    override fun getSummary(issueKey: String): VcsFacadeService.IssueVcsSummary =
+    override fun getSummary(issueKey: String): VcsFacadeService.IssueVcsSummary = try {
         with(vcsFacadeClient.findByIssueKey(issueKey.also { log.info("Get VCS Summary for '{}'", it) })) {
             VcsFacadeService.IssueVcsSummary(
                 VcsFacadeService.IssueBranchSummary(
@@ -35,9 +36,19 @@ class VcsFacadeServiceImpl(
                 )
             )
         }
+    } catch (e: VcsFacadeException) {
+        log.error(e.message, e)
+        VcsFacadeService.IssueVcsSummary(
+            VcsFacadeService.IssueBranchSummary(0, null),
+            VcsFacadeService.IssueCommitSummary(0, null),
+            VcsFacadeService.IssuePullRequestSummary(0, null, null)
+        )
+    }
 
     override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
-        with(vcsFacadeClient.findCommitsWithFilesByIssueKey(issueKey.also {log.info("Get Commits for '{}'", it)})) {
+        with(vcsFacadeClient.findCommitsWithFilesByIssueKey(
+            issueKey.also { log.info("Get Commits for '{}'", it) }
+        )) {
             val repositoryCommits = groupBy { c -> c.commit.repository }
                 .map { (repository, commits) ->
                     VcsFacadeService.RepositoryEntities(

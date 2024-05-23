@@ -10,7 +10,7 @@
                 <div class="detail-commits-container has-files" data-repository-index="0">
                     #repository( $repository )
                     <div class="devstatus-detail-table commits-table">
-                        <table class="aui">
+                        <table class="aui aui-table-list">
                             <thead>
                             <tr>
                                 <th class="author cell-type-collapsed">Author</th>
@@ -32,13 +32,12 @@
                                         <span class="ellipsis" title="$commit.message">$commit.message</span>
                                     </td>
                                     <td class="timestamp">#livestamp($commit.date)</td>
-                                    <td class="filecount"><a class="extra-content-in-title aui-expander-trigger" original-title="Click to show files" role="button" tabindex="0"
-                                                             aria-controls="${commit.sha}-files" id="regular-a11y-anchor-trigger">$commit.files.size() file#if($commit.files.size() > 1)s#end</a>
+                                    <td class="filecount">
+                                        <button class="aui-button aui-button-link extra-content-in-title octopus-vcs-show-files" data-key="${commit.sha}-files">$commit.files.size() file#if($commit.files.size() > 1)s#end</button>
                                     </td>
                                 </tr>
-                                <tr class="filerow">
+                                <tr class="filerow hidden" id="${commit.sha}-files">
                                     <td colspan="5">
-                                        <div class="aui-expander-content" id="${commit.sha}-files">
                                             #set( $filesForEachCount = 0 )
                                             #foreach($file in $commit.files)
                                                 #set( $filesForEachCount = $filesForEachCount + 1 )
@@ -59,7 +58,6 @@
                                             #if($filesForEachCount < $commit.files.size())
                                                 <a class="more-files-info" href="$commit.url">See more files in $repository.name</a>
                                             #end
-                                        </div>
                                     </td>
                                 </tr>
                                 #end
