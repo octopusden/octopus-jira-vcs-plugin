@@ -24,20 +24,18 @@ jQuery(function () {
 
 AJS.$(function () {
     JIRA.bind(JIRA.Events.NEW_CONTENT_ADDED, function (e, context, reason) {
-        const showFilesButtons = context.find(".detail-commits-container").find(".octopus-vcs-show-files")
-        if (showFilesButtons.length > 0) {
-            console.debug('Found show files button, register event listener');
-            jQuery('.octopus-vcs-show-files').click(function (event) {
+        const commitFilesButtons = context.find(".detail-commits-container").find(".octopus-vcs-show-commit-files")
+        if (commitFilesButtons.length > 0) {
+            console.debug("Found 'show commit files' button(s), register event listener");
+            jQuery('.octopus-vcs-show-commit-files').click(function (event) {
                 let target = event.target.attributes["data-key"].nodeValue;
-                console.info('Show files for commit: ' + target);
                 const targetNode = document.getElementById(target)
                 if (targetNode != null) {
-                    console.debug(`Found node: ${targetNode.nodeName}`)
                     if (targetNode.classList.contains("hidden")) {
-                        console.debug(`Node ${targetNode.nodeName} is hidden, show`)
+                        console.info('Show files for commit: ' + target);
                         targetNode.classList.remove("hidden")
                     } else {
-                        console.debug(`Node ${targetNode.nodeName} is visible, hide`)
+                        console.info('Hide files for commit: ' + target);
                         targetNode.classList.add("hidden")
                     }
                 }
@@ -45,6 +43,38 @@ AJS.$(function () {
             });
         }
 
+        const showRepositoryFilesButtons = context.find(".detail-commits-container").find(".octopus-vcs-show-repository-files")
+        if (showRepositoryFilesButtons.length > 0) {
+            console.debug("Found 'show repository files' button(s), register event listener");
+            jQuery('.octopus-vcs-show-repository-files').click(function (event) {
+                let target = event.target.attributes["data-key"].nodeValue;
+                console.info('Show files for repository: ' + target);
+                const targetNodes = document.getElementsByClassName(target)
+                for (let i = 0; i < targetNodes.length; i++) {
+                    const targetNode = targetNodes.item(i)
+                    if (targetNode.classList.contains("hidden")) {
+                        targetNode.classList.remove("hidden")
+                    }
+                }
+                return false
+            });
+        }
 
+        const hideRepositoryFilesButtons = context.find(".detail-commits-container").find(".octopus-vcs-hide-repository-files")
+        if (hideRepositoryFilesButtons.length > 0) {
+            console.debug("Found 'hide' repository files button(s), register event listener");
+            jQuery('.octopus-vcs-hide-repository-files').click(function (event) {
+                let target = event.target.attributes["data-key"].nodeValue;
+                console.info('Hide files for repository: ' + target);
+                const targetNodes = document.getElementsByClassName(target)
+                for (let i = 0; i < targetNodes.length; i++) {
+                    const targetNode = targetNodes.item(i)
+                    if (!targetNode.classList.contains("hidden")) {
+                        targetNode.classList.add("hidden")
+                    }
+                }
+                return false
+            });
+        }
     })
 });

@@ -33,10 +33,10 @@
                                     </td>
                                     <td class="timestamp">#livestamp($commit.date)</td>
                                     <td class="filecount">
-                                        <button class="aui-button aui-button-link extra-content-in-title octopus-vcs-show-files" data-key="${commit.sha}-files">$commit.files.size() file#if($commit.files.size() > 1)s#end</button>
+                                        <button class="aui-button aui-button-link extra-content-in-title octopus-vcs-show-commit-files" data-key="${commit.sha}-files">$commit.files.size() file#if($commit.files.size() > 1)s#end</button>
                                     </td>
                                 </tr>
-                                <tr class="filerow hidden" id="${commit.sha}-files">
+                                <tr class="filerow ${repository.name}-files hidden" id="${commit.sha}-files">
                                     <td colspan="5">
                                             #set( $filesForEachCount = 0 )
                                             #foreach($file in $commit.files)
@@ -51,7 +51,7 @@
                                                             href="$file.url" title="$file.path">$file.path</a>
                                                     </div>
                                                 </div>
-                                                #if($filesForEachCount > 5)
+                                                #if($filesForEachCount == 5)
                                                     #break
                                                 #end
                                             #end

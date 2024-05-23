@@ -17,6 +17,16 @@
                 <a class="repository-link" href="$repository.url">$repository.name</a>
             </div>
         </div>
+        <div class="aui-item action-space">
+            <div class="file-expand">
+                <button class="aui-button aui-button-link octopus-vcs-show-repository-files" data-key="${repository.name}-files" id="${repository.name}-files">
+                    Show files
+                </button>
+                <button class="aui-button aui-button-link octopus-vcs-hide-repository-files" data-key="${repository.name}-files" id="${repository.name}-files">
+                    Hide files
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 #end
