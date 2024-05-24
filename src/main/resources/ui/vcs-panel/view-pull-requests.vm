@@ -1,6 +1,6 @@
 #parse("/ui/vcs-panel/vcs-user.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
-<h2>$key: $pullRequests.size pull request#if ($pullRequests.size > 1)s#end</h2>
+<h2>$key: $pullRequests.size() pull request#if ($pullRequests.size() > 1)s#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 750px;">
         <div class="status-loading" style="display: none;"></div>
@@ -40,11 +40,11 @@
                                         #foreach($reviewer in $pullRequest.reviewers)
                                             #set( $reviewersForEachCount = $reviewersForEachCount + 1 )
                                             #vcsUser($reviewer)
-                                            #if($reviewersForEachCount > 1 && $pullRequest.reviewers.size > 3)
+                                            #if($reviewersForEachCount > 1 && $pullRequest.reviewers.size() > 3)
                                                 #break
                                             #end
                                         #end
-                                        #set ($extraReviewersSize = $pullRequest.reviewers.size - $reviewersForEachCount)
+                                        #set ($extraReviewersSize = $pullRequest.reviewers.size() - $reviewersForEachCount)
                                         #if($extraReviewersSize > 0)
                                             <span class="aui-badge extrareviewers-tooltip reviewers-link"
                                                   data-aui-trigger
