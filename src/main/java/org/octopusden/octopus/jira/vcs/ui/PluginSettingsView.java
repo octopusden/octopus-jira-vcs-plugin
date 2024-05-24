@@ -32,7 +32,7 @@ public class PluginSettingsView extends AbstractViewSettings {
 
     @Override
     public void update() {
-        vcsFacadeService.updateConnection();
+        vcsFacadeService.updateProperties();
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.Date
 import org.octopusden.octopus.vcsfacade.client.common.dto.FileChangeType
 
 interface VcsFacadeService {
-    fun updateConnection()
+    fun updateProperties()
     fun getSummary(issueKey: String): IssueVcsSummary
     fun getCommits(issueKey: String): Repositories<Commit>
     fun getPullRequests(issueKey: String): Collection<PullRequest>
@@ -32,6 +32,7 @@ interface VcsFacadeService {
         val message: String,
         val date: Date,
         val author: Author,
+        val totalFiles: Int,
         val files: Collection<FileChange>
     )
 

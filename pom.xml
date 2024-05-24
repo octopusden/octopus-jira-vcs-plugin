@@ -55,7 +55,7 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 
         <octopus-jira-utils.version>2.0.10</octopus-jira-utils.version>
-        <octopus-vcs-facade.version>3.0.7</octopus-vcs-facade.version>
+        <octopus-vcs-facade.version>3.0.8</octopus-vcs-facade.version>
 
         <confluence.url></confluence.url>
         <confluence.username></confluence.username>
@@ -79,6 +79,7 @@
                         <version>${amps.version}</version>
                         <extensions>true</extensions>
                         <configuration>
+                            <compressResources>false</compressResources>
                             <skipITs>true</skipITs>
                             <server>${jira.host}</server>
                             <applications>
@@ -211,6 +212,7 @@
                         </executions>
                         <configuration>
                             <log4jProperties>src/test/resources/log4j-jira.properties</log4jProperties>
+                            <compressResources>false</compressResources>
                             <productVersion>${jira.version}</productVersion>
                             <productDataVersion>${jira.version}</productDataVersion>
                             <skipTests>false</skipTests>
@@ -490,6 +492,7 @@
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <compressResources>false</compressResources>
                     <enableQuickReload>true</enableQuickReload>
                     <log4jProperties>src/test/resources/log4j-jira.properties</log4jProperties>
                     <server>${jira.host}</server>

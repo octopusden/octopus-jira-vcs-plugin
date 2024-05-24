@@ -2,6 +2,8 @@ package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
 import java.util.Date
 import javax.inject.Named
+import org.octopusden.octopus.jira.vcs.config.PluginProperty
+import org.octopusden.octopus.jira.vcs.config.PluginSettings
 import org.octopusden.octopus.vcsfacade.client.VcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.common.exception.VcsFacadeException
 import org.octopusden.octopus.vcsfacade.client.impl.ClassicVcsFacadeClient
@@ -11,13 +13,16 @@ import org.slf4j.LoggerFactory
 
 @Named
 class VcsFacadeServiceImpl(
-    private val vcsFacadeClientParametersProvider: VcsFacadeClientParametersProvider
+    private val vcsFacadeClientParametersProvider: VcsFacadeClientParametersProvider,
+    private val pluginSettings: PluginSettings
 ) : VcsFacadeService {
 
     private var vcsFacadeClient: VcsFacadeClient = getClient()
+    private var commitFileLimit = pluginSettings.getLong(PluginProperty.VCS_PANEL_COMMIT_FILE_LIMIT).toInt()
 
-    override fun updateConnection() {
+    override fun updateProperties() {
         vcsFacadeClient = getClient()
+        commitFileLimit = pluginSettings.getLong(PluginProperty.VCS_PANEL_COMMIT_FILE_LIMIT).toInt()
     }
 
     override fun getSummary(issueKey: String): VcsFacadeService.IssueVcsSummary = try {
@@ -47,7 +52,7 @@ class VcsFacadeServiceImpl(
 
     override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
         with(vcsFacadeClient.findCommitsWithFilesByIssueKey(
-            issueKey.also { log.info("Get Commits for '{}'", it) }
+            issueKey.also { log.info("Get Commits for '{}'", it) }, commitFileLimit
         )) {
             val repositoryCommits = groupBy { c -> c.commit.repository }
                 .map { (repository, commits) ->
@@ -61,6 +66,7 @@ class VcsFacadeServiceImpl(
                                 c.commit.message,
                                 c.commit.date,
                                 VcsFacadeService.Author(c.commit.author.avatar, c.commit.author.name),
+                                c.totalFiles,
                                 c.files.map { f ->
                                     VcsFacadeService.FileChange(
                                         VcsFacadeService.FileChange.Type.valueOf(f.type), f.link, f.path
