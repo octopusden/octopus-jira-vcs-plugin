@@ -1,5 +1,6 @@
 package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
+import java.net.URI
 import java.util.Date
 import org.octopusden.octopus.vcsfacade.client.common.dto.FileChangeType
 
@@ -38,8 +39,8 @@ interface VcsFacadeService {
 
     data class Author(val avatar: String?, val name: String)
     data class RepositoryEntities<T : Any>(val url: String, val avatar: String?, val entities: Collection<T>) {
-        val name: String
-            get() = url.substring(url.lastIndexOf("/") + 1)
+        val name: String = url.substring(url.lastIndexOf("/") + 1)
+        val path: String = URI.create(url).path
     }
 
     data class Repositories<T : Any>(val size: Int, val values: Collection<RepositoryEntities<T>>)

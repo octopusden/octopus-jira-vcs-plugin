@@ -1,6 +1,30 @@
 #parse("/ui/vcs-panel/repository.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
 #parse("/ui/vcs-panel/vcs-user.vm")
+#macro(repositoryCommitDataKey $repository, $commit)
+    ${repository.path.replace("/", "-")}-${commit.sha}-files
+#end
+#macro(repositoryDatakey $repository)
+    ${repository.path.replace("/", "-")}-files
+#end
+
+#macro(commitRepository $repository)
+<div class="repository-header">
+    <div class="aui-group aui-group-split repository-header-group">
+        #repository( $repository )
+        <div class="aui-item action-space">
+            <div class="file-expand">
+                <button class="aui-button aui-button-link octopus-vcs-show-repository-files" data-key="#repositoryDatakey( $repository )" id="#repositoryDatakey( $repository )">
+                    Show files
+                </button>
+                <button class="aui-button aui-button-link octopus-vcs-hide-repository-files" data-key="#repositoryDatakey( $repository )" id="#repositoryDatakey( $repository )">
+                    Hide files
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+#end
 <h2>$key: $repositoryCommits.size unique commit#if($repositoryCommits.size > 1)s#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 753px;">
@@ -8,7 +32,7 @@
         <div class="detail-content-container">
             #foreach($repository in $repositoryCommits.values)
                 <div class="detail-commits-container has-files" data-repository-index="0">
-                    #repository( $repository )
+                    #commitRepository( $repository )
                     <div class="devstatus-detail-table commits-table">
                         <table class="aui aui-table-list">
                             <thead>
@@ -33,10 +57,10 @@
                                     </td>
                                     <td class="timestamp">#livestamp($commit.date)</td>
                                     <td class="filecount">
-                                        <button class="aui-button aui-button-link extra-content-in-title octopus-vcs-show-commit-files" data-key="${commit.sha}-files">$commit.totalFiles file#if($commit.totalFiles > 1)s#end</button>
+                                        <button class="aui-button aui-button-link extra-content-in-title octopus-vcs-show-commit-files" data-key="#repositoryCommitDataKey( $repository, $commit)">$commit.totalFiles file#if($commit.totalFiles > 1)s#end</button>
                                     </td>
                                 </tr>
-                                <tr class="filerow ${repository.name}-files hidden" id="${commit.sha}-files">
+                                <tr class="filerow #repositoryDatakey( $repository ) hidden" id="#repositoryCommitDataKey( $repository, $commit)">
                                     <td colspan="5">
                                             #set( $filesForEachCount = 0 )
                                             #foreach($file in $commit.files)
