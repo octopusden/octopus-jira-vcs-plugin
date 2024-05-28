@@ -5,7 +5,6 @@ import javax.inject.Named
 import org.octopusden.octopus.jira.vcs.config.PluginProperty
 import org.octopusden.octopus.jira.vcs.config.PluginSettings
 import org.octopusden.octopus.vcsfacade.client.VcsFacadeClient
-import org.octopusden.octopus.vcsfacade.client.common.exception.VcsFacadeException
 import org.octopusden.octopus.vcsfacade.client.impl.ClassicVcsFacadeClient
 import org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider
 import org.slf4j.Logger
@@ -41,7 +40,7 @@ class VcsFacadeServiceImpl(
                 )
             )
         }
-    } catch (e: VcsFacadeException) {
+    } catch (e: Exception) {
         log.error(e.message, e)
         VcsFacadeService.IssueVcsSummary(
             VcsFacadeService.IssueBranchSummary(0, null),
