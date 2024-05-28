@@ -51,9 +51,14 @@ ${repository.path.replace("/", "-")}-files
                                 </td>
                                 <td class="timestamp">#livestamp($commit.date)</td>
                                 <td class="filecount">
+                                    #if($commit.totalFiles > 0)
                                     <a class="extra-content-in-title octopus-vcs-show-commit-files" data-key="#repositoryCommitDataKey( $repository, $commit)">$commit.totalFiles file#if($commit.totalFiles > 1)s#end</a>
+                                    #else
+                                    <span class="extra-content-in-title">0 files</span>
+                                    #end
                                 </td>
                             </tr>
+                            #if($commit.totalFiles > 0)
                             <tr class="filerow #repositoryDatakey( $repository ) hidden" id="#repositoryCommitDataKey( $repository, $commit)">
                                 <td colspan="5">
                                     #set( $filesForEachCount = 0 )
@@ -75,6 +80,7 @@ ${repository.path.replace("/", "-")}-files
                                     #end
                                 </td>
                             </tr>
+                            #end
                             #end
                         </tbody>
                     </table>
