@@ -7,7 +7,6 @@ ${repository.path.replace("/", "-")}-${commit.sha}-files
 #macro(repositoryDatakey $repository)
 ${repository.path.replace("/", "-")}-files
 #end
-
 #macro(commitRepository $repository)
 <div class="repository-header">
     <div class="aui-group aui-group-split repository-header-group">
@@ -27,60 +26,60 @@ ${repository.path.replace("/", "-")}-files
         <div class="status-loading" style="display: none;"></div>
         <div class="detail-content-container">
             #foreach($repository in $repositoryCommits.values)
-                <div class="detail-commits-container has-files" data-repository-index="0">
-                    #commitRepository($repository)
-                    <div class="devstatus-detail-table commits-table">
-                        <table class="aui aui-table-list">
-                            <thead>
-                            <tr>
-                                <th class="author cell-type-collapsed">Author</th>
-                                <th class="changeset cell-type-collapsed">Commit</th>
-                                <th class="message">Message</th>
-                                <th class="timestamp">Date</th>
-                                <th class="filecount">Files</th>
+            <div class="detail-commits-container has-files" data-repository-index="0">
+                #commitRepository($repository)
+                <div class="devstatus-detail-table commits-table">
+                    <table class="aui aui-table-list">
+                        <thead>
+                        <tr>
+                            <th class="author cell-type-collapsed">Author</th>
+                            <th class="changeset cell-type-collapsed">Commit</th>
+                            <th class="message">Message</th>
+                            <th class="timestamp">Date</th>
+                            <th class="filecount">Files</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #foreach($commit in $repository.entities)
+                            <tr data-changesetid="$commit.sha" class="commitrow" data-commit-index="0">
+                                <td class="author">#vcsUser($commit.author) </td>
+                                <td class="changeset">
+                                    <a class="changesetid" href="$commit.url">$commit.sha.substring(0, 11)</a>
+                                </td>
+                                <td class="message">
+                                    <span class="ellipsis" title="$commit.message">$commit.message</span>
+                                </td>
+                                <td class="timestamp">#livestamp($commit.date)</td>
+                                <td class="filecount">
+                                    <a class="extra-content-in-title octopus-vcs-show-commit-files" data-key="#repositoryCommitDataKey( $repository, $commit)">$commit.totalFiles file#if($commit.totalFiles > 1)s#end</a>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                                #foreach($commit in $repository.entities)
-                                <tr data-changesetid="$commit.sha" class="commitrow" data-commit-index="0">
-                                    <td class="author">#vcsUser($commit.author) </td>
-                                    <td class="changeset">
-                                        <a class="changesetid" href="$commit.url">$commit.sha.substring(0, 11)</a>
-                                    </td>
-                                    <td class="message">
-                                        <span class="ellipsis" title="$commit.message">$commit.message</span>
-                                    </td>
-                                    <td class="timestamp">#livestamp($commit.date)</td>
-                                    <td class="filecount">
-                                        <a class="extra-content-in-title octopus-vcs-show-commit-files" data-key="#repositoryCommitDataKey( $repository, $commit)">$commit.totalFiles file#if($commit.totalFiles > 1)s#end</a>
-                                    </td>
-                                </tr>
-                                <tr class="filerow #repositoryDatakey( $repository ) hidden" id="#repositoryCommitDataKey( $repository, $commit)">
-                                    <td colspan="5">
-                                            #set( $filesForEachCount = 0 )
-                                            #foreach($file in $commit.files)
-                                                #set( $filesForEachCount = $filesForEachCount + 1 )
-                                                <div class="file">
-                                                    <div class="change">
-                                                        <div class="changetype"><span
-                                                                class="aui-lozenge aui-lozenge-$file.type.style aui-lozenge-subtle">$file.type</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="filename ellipsis"><a
-                                                            href="$file.url" title="$file.path">$file.path</a>
-                                                    </div>
-                                                </div>
-                                            #end
-                                            #if($filesForEachCount < $commit.totalFiles)
-                                                <a class="more-files-info" href="$commit.url">See more files in $repository.name</a>
-                                            #end
-                                    </td>
-                                </tr>
-                                #end
-                            </tbody>
-                        </table>
-                    </div>
+                            <tr class="filerow #repositoryDatakey( $repository ) hidden" id="#repositoryCommitDataKey( $repository, $commit)">
+                                <td colspan="5">
+                                    #set( $filesForEachCount = 0 )
+                                    #foreach($file in $commit.files)
+                                    #set( $filesForEachCount = $filesForEachCount + 1 )
+                                    <div class="file">
+                                        <div class="change">
+                                            <div class="changetype"><span
+                                                    class="aui-lozenge aui-lozenge-$file.type.style aui-lozenge-subtle">$file.type</span>
+                                            </div>
+                                        </div>
+                                        <div class="filename ellipsis"><a
+                                                href="$file.url" title="$file.path">$file.path</a>
+                                        </div>
+                                    </div>
+                                    #end
+                                    #if($filesForEachCount < $commit.totalFiles)
+                                    <a class="more-files-info" href="$commit.url">See more files in $repository.name</a>
+                                    #end
+                                </td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
                 </div>
+            </div>
             #end
         </div>
     </div>
