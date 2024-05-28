@@ -85,7 +85,7 @@ class VcsFacadeServiceImpl(
                     pr.link,
                     pr.title,
                     VcsFacadeService.Author(pr.author.avatar, pr.author.name),
-                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) },
+                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) }.sortedBy { r -> r.approved },
                     VcsFacadeService.IssuePullRequestSummary.Status.valueOf(pr.status.name),
                     pr.updatedAt,
                     pr.target
