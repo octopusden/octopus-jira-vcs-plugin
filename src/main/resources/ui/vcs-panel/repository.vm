@@ -1,8 +1,6 @@
 #macro(repository $repository)
-<div class="repository-header">
-    <div class="aui-group aui-group-split repository-header-group">
-        <div class="aui-item project-space">
-            <div class="project-avatar" title="$repository.name">
+<div class="aui-item project-space">
+    <div class="project-avatar" title="$repository.name">
                 <span class="aui-avatar aui-avatar-small aui-avatar-project fusion-avatar-project">
                     <span class="aui-avatar-inner">
                         #if ($repository.avatar)
@@ -12,11 +10,9 @@
                         #end
                     </span>
                 </span>
-            </div>
-            <div class="project-info">
-                <a class="repository-link" href="$repository.url">$repository.name</a>
-            </div>
-        </div>
+    </div>
+    <div class="project-info">
+        <a class="repository-link" href="$repository.url">$repository.name</a>
     </div>
 </div>
 #end

@@ -1,5 +1,12 @@
 #parse("/ui/vcs-panel/repository.vm")
 #parse("/ui/vcs-panel/livestamp.vm")
+#macro(branchRepository $repository)
+<div class="repository-header">
+    <div class="aui-group aui-group-split repository-header-group">
+        #repository($repository)
+    </div>
+</div>
+#end
 <h2>$key: $repositoryBranches.size branch#if($repositoryBranches.size > 1)es#end</h2>
 <div class="devstatus-dialog-content">
     <div class="form-body" style="min-height: 400px; max-height: 750px;">
@@ -19,7 +26,7 @@
                             #foreach($repository in $repositoryBranches.values)
                                 #foreach($branch in $repository.entities)
                                     <tr class="branch-row">
-                                        <td class="repository">#repository($repository)</td>
+                                        <td class="repository">#branchRepository( $repository )</td>
                                         <td class="branch">
                                             <div class="branch-name"><span
                                                     class="aui-icon aui-icon-small aui-iconfont-devtools-branch-small"></span><a
