@@ -20,10 +20,10 @@ class VcsPanelContextProvider @Inject constructor(
     private val vcsFacadeService: VcsFacadeService,
     @ComponentImport private val webResourceUrlProvider: WebResourceUrlProvider,
     @ComponentImport private val cacheManager: CacheManager,
-    private val pluginSettings: PluginSettings
+    pluginSettings: PluginSettings
 ) : AbstractJiraContextProvider() {
 
-    private val cache: Cache<String, VcsFacadeService.IssueVcsSummary>? =
+    private val cache: Cache<Long, VcsFacadeService.IssueVcsSummary>? =
         with(pluginSettings.getLong(PluginProperty.VCS_PANEL_CACHE_SUMMARY_EXPIRE_AFTER_SECS)) {
             if (this > 0) {
                 cacheManager.getCache(
@@ -40,18 +40,17 @@ class VcsPanelContextProvider @Inject constructor(
     override fun getContextMap(user: ApplicationUser, jiraHelper: JiraHelper): MutableMap<String, Any> {
         val contextMap = mutableMapOf<String, Any>()
         (jiraHelper.contextParams["issue"] as? Issue)
-            ?.key
-            ?.let { issueKey ->
-                val vcsInformation = cache?.get(issueKey) { issueKey.toVcsSummary() } ?: issueKey.toVcsSummary()
+            ?.let { issue ->
+                val vcsInformation = cache?.get(issue.id) { issue.id.toVcsSummary() } ?: issue.id.toVcsSummary()
                 contextMap["branches"] = vcsInformation.branches
                 contextMap["commits"] = vcsInformation.commits
                 contextMap["pullRequests"] = vcsInformation.pullRequests
                 contextMap["dateTool"] = DateTool()
-                contextMap["issueKey"] = issueKey
+                contextMap["issueKey"] = issue.key
                 contextMap["jiraBaseUrl"] = webResourceUrlProvider.baseUrl
             }
         return contextMap
     }
 
-    private fun String.toVcsSummary() = vcsFacadeService.getSummary(this)
+    private fun Long.toVcsSummary() = vcsFacadeService.getSummary(this)
 }

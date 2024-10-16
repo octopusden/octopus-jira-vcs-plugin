@@ -1,8 +1,7 @@
 package org.octopusden.octopus.jira.vcs.ui;
 
-import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService;
-
 import java.util.Collection;
+import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService;
 
 public class PullRequestsDialogAction extends VcsDialogAction {
 
@@ -14,7 +13,7 @@ public class PullRequestsDialogAction extends VcsDialogAction {
 
     public Collection<VcsFacadeService.PullRequest> getPullRequests() {
         if (pullRequests == null) {
-            pullRequests = vcsFacadeService.getPullRequests(getKey());
+            pullRequests = vcsFacadeService.getPullRequests(getId());
         }
         return pullRequests;
     }

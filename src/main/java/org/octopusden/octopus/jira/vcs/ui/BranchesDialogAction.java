@@ -12,7 +12,7 @@ public class BranchesDialogAction extends VcsDialogAction {
 
     public VcsFacadeService.Repositories<VcsFacadeService.Branch> getRepositoryBranches() {
         if (branches == null) {
-            branches = vcsFacadeService.getBranches(getKey());
+            branches = vcsFacadeService.getBranches(getId());
         }
         return branches;
     }

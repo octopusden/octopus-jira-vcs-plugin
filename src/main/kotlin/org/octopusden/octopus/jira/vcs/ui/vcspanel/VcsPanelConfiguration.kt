@@ -6,11 +6,9 @@ import org.octopusden.octopus.jira.vcs.config.PluginSettings
 
 class VcsPanelConfiguration(private val pluginSettings: PluginSettings) : Condition {
     override fun shouldDisplay(context: MutableMap<String, Any>) =
-        context["issue"]?.let { issue ->
+        context["issue"]?.let { _ ->
             pluginSettings.getBoolean(PluginProperty.VCS_PANEL_DISPLAY)
         } ?: false
 
-    override fun init(params: MutableMap<String, String>?) {
-
-    }
+    override fun init(params: MutableMap<String, String>?) {}
 }

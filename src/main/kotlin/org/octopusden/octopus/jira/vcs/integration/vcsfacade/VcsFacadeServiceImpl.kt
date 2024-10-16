@@ -1,5 +1,7 @@
 package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
+import com.atlassian.jira.issue.IssueManager
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport
 import java.util.Date
 import javax.inject.Named
 import org.octopusden.octopus.jira.vcs.config.PluginProperty
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory
 
 @Named
 class VcsFacadeServiceImpl(
+    @ComponentImport private val issueManager: IssueManager,
     private val vcsFacadeClientParametersProvider: VcsFacadeClientParametersProvider,
     private val pluginSettings: PluginSettings
 ) : VcsFacadeService {
@@ -24,8 +27,10 @@ class VcsFacadeServiceImpl(
         commitFileLimit = pluginSettings.getLong(PluginProperty.VCS_PANEL_COMMIT_FILE_LIMIT).toInt()
     }
 
-    override fun getSummary(issueKey: String): VcsFacadeService.IssueVcsSummary = try {
-        with(vcsFacadeClient.findByIssueKey(issueKey.also { log.info("Get VCS Summary for '{}'", it) })) {
+    override fun getSummary(issueId: Long): VcsFacadeService.IssueVcsSummary = try {
+        with(vcsFacadeClient.findByIssueKeys(issueManager.getAllIssueKeys(issueId).also {
+            log.info("Get VCS Summary for issue with id $issueId $it")
+        })) {
             VcsFacadeService.IssueVcsSummary(
                 VcsFacadeService.IssueBranchSummary(
                     branches.size, branches.updated
@@ -49,10 +54,10 @@ class VcsFacadeServiceImpl(
         )
     }
 
-    override fun getCommits(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
-        with(vcsFacadeClient.findCommitsWithFilesByIssueKey(
-            issueKey.also { log.info("Get Commits for '{}'", it) }, commitFileLimit
-        )) {
+    override fun getCommits(issueId: Long): VcsFacadeService.Repositories<VcsFacadeService.Commit> =
+        with(vcsFacadeClient.findCommitsWithFilesByIssueKeys(issueManager.getAllIssueKeys(issueId).also {
+            log.info("Get Commits for issue with id $issueId $it")
+        }, commitFileLimit)) {
             val repositoryCommits = groupBy { c -> c.commit.repository }
                 .map { (repository, commits) ->
                     VcsFacadeService.RepositoryEntities(
@@ -77,14 +82,17 @@ class VcsFacadeServiceImpl(
             VcsFacadeService.Repositories(size, repositoryCommits)
         }
 
-    override fun getPullRequests(issueKey: String): Collection<VcsFacadeService.PullRequest> =
-        with(vcsFacadeClient.findPullRequestsByIssueKey(issueKey.also { log.info("Get Pull Requests for '{}'", it) })) {
+    override fun getPullRequests(issueId: Long): Collection<VcsFacadeService.PullRequest> =
+        with(vcsFacadeClient.findPullRequestsByIssueKeys(issueManager.getAllIssueKeys(issueId).also {
+            log.info("Get Pull Requests for issue with id $issueId $it")
+        })) {
             this.map { pr ->
                 VcsFacadeService.PullRequest(
                     pr.link,
                     pr.title,
                     VcsFacadeService.Author(pr.author.avatar, pr.author.name),
-                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) }.sortedBy { r -> r.approved },
+                    pr.reviewers.map { r -> VcsFacadeService.Reviewer(r.user.name, r.user.avatar, r.approved) }
+                        .sortedBy { r -> r.approved },
                     VcsFacadeService.IssuePullRequestSummary.Status.valueOf(pr.status.name),
                     pr.updatedAt,
                     pr.target
@@ -92,8 +100,10 @@ class VcsFacadeServiceImpl(
             }
         }
 
-    override fun getBranches(issueKey: String): VcsFacadeService.Repositories<VcsFacadeService.Branch> =
-        with(vcsFacadeClient.findBranchesByIssueKey(issueKey.also { log.info("Get Branches for '{}'", it) })) {
+    override fun getBranches(issueId: Long): VcsFacadeService.Repositories<VcsFacadeService.Branch> =
+        with(vcsFacadeClient.findBranchesByIssueKeys(issueManager.getAllIssueKeys(issueId).also {
+            log.info("Get Branches for issue with id $issueId $it")
+        })) {
             val repositoryBranches = this.groupBy { b -> b.repository }.map { (repository, branches) ->
                 VcsFacadeService.RepositoryEntities(
                     repository.link,

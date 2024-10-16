@@ -12,7 +12,7 @@ public class CommitsDialogAction extends VcsDialogAction {
 
     public VcsFacadeService.Repositories<VcsFacadeService.Commit> getRepositoryCommits() {
         if (commits == null) {
-            commits = vcsFacadeService.getCommits(getKey());
+            commits = vcsFacadeService.getCommits(getId());
         }
         return commits;
     }

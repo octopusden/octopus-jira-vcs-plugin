@@ -55,7 +55,7 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 
         <octopus-jira-utils.version>2.0.10</octopus-jira-utils.version>
-        <octopus-vcs-facade.version>3.0.8</octopus-vcs-facade.version>
+        <octopus-vcs-facade.version>3.0.18</octopus-vcs-facade.version>
 
         <confluence.url></confluence.url>
         <confluence.username></confluence.username>

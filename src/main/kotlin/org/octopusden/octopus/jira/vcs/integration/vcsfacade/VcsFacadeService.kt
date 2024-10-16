@@ -6,10 +6,10 @@ import org.octopusden.octopus.vcsfacade.client.common.dto.FileChangeType
 
 interface VcsFacadeService {
     fun updateProperties()
-    fun getSummary(issueKey: String): IssueVcsSummary
-    fun getCommits(issueKey: String): Repositories<Commit>
-    fun getPullRequests(issueKey: String): Collection<PullRequest>
-    fun getBranches(issueKey: String): Repositories<Branch>
+    fun getSummary(issueId: Long): IssueVcsSummary
+    fun getCommits(issueId: Long): Repositories<Commit>
+    fun getPullRequests(issueId: Long): Collection<PullRequest>
+    fun getBranches(issueId: Long): Repositories<Branch>
 
     data class IssueVcsSummary(
         val branches: IssueBranchSummary, val commits: IssueCommitSummary, val pullRequests: IssuePullRequestSummary
