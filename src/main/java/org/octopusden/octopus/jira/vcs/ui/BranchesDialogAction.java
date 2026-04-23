@@ -6,8 +6,8 @@ public class BranchesDialogAction extends VcsDialogAction {
 
     private VcsFacadeService.Repositories<VcsFacadeService.Branch> branches;
 
-    public BranchesDialogAction(VcsFacadeService vcsFacadeService) {
-        super(vcsFacadeService);
+    public BranchesDialogAction() {
+        super();
     }
 
     public VcsFacadeService.Repositories<VcsFacadeService.Branch> getRepositoryBranches() {
