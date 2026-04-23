@@ -6,8 +6,8 @@ public class CommitsDialogAction extends VcsDialogAction {
 
     VcsFacadeService.Repositories<VcsFacadeService.Commit> commits;
 
-    public CommitsDialogAction(VcsFacadeService vcsFacadeService) {
-        super(vcsFacadeService);
+    public CommitsDialogAction() {
+        super();
     }
 
     public VcsFacadeService.Repositories<VcsFacadeService.Commit> getRepositoryCommits() {

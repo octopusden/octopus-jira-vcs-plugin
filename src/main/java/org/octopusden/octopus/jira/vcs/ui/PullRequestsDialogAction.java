@@ -7,8 +7,8 @@ public class PullRequestsDialogAction extends VcsDialogAction {
 
     private Collection<VcsFacadeService.PullRequest> pullRequests;
 
-    public PullRequestsDialogAction(VcsFacadeService vcsFacadeService) {
-        super(vcsFacadeService);
+    public PullRequestsDialogAction() {
+        super();
     }
 
     public Collection<VcsFacadeService.PullRequest> getPullRequests() {

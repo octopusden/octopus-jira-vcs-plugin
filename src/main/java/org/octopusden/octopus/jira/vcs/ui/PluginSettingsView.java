@@ -1,5 +1,6 @@
 package org.octopusden.octopus.jira.vcs.ui;
 
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.sal.api.websudo.WebSudoRequired;
 import org.octopusden.octopus.jira.vcs.config.PluginProperty;
 import org.octopusden.octopus.jira.vcs.config.PluginSettings;
@@ -7,7 +8,6 @@ import org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +19,20 @@ public class PluginSettingsView extends AbstractViewSettings {
 
     private final VcsFacadeService vcsFacadeService;
 
-    @Inject
-    public PluginSettingsView(PluginSettings pluginSettings, VcsFacadeService vcsFacadeService) {
-        super(pluginSettings);
-        this.vcsFacadeService = vcsFacadeService;
+    public PluginSettingsView() {
+        super(requireComponent(PluginSettings.class));
+        this.vcsFacadeService = requireComponent(VcsFacadeService.class);
+    }
+
+    private static <T> T requireComponent(Class<T> type) {
+        T component = ComponentAccessor.getOSGiComponentInstanceOfType(type);
+        if (component == null) {
+            throw new IllegalStateException(
+                    "Unable to resolve OSGi component of type " + type.getName()
+                            + ". Check that the Octopus JIRA VCS Plugin is fully enabled"
+                            + " and that its components are declared as public in atlassian-plugin.xml.");
+        }
+        return component;
     }
 
     @Override

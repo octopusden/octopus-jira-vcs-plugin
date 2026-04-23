@@ -7,6 +7,36 @@
 
     <resource type="i18n" name="i18n" location="/"/>
 
+    <component-import key="pluginSettingsFactory"
+                      interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory"/>
+    <component-import key="cacheManager"
+                      interface="com.atlassian.cache.CacheManager"/>
+    <component-import key="issueManager"
+                      interface="com.atlassian.jira.issue.IssueManager"/>
+    <component-import key="webResourceUrlProvider"
+                      interface="com.atlassian.plugin.webresource.WebResourceUrlProvider"/>
+
+    <component key="pluginSettings"
+               name="Plugin Settings"
+               class="org.octopusden.octopus.jira.vcs.config.PluginSettings"
+               public="true">
+        <interface>org.octopusden.octopus.jira.vcs.config.PluginSettings</interface>
+    </component>
+
+    <component key="jiraVcsPluginVcsFacadeClientParametersProvider"
+               name="VCS Facade Client Parameters Provider"
+               class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.JiraVcsPluginVcsFacadeClientParametersProvider"
+               public="true">
+        <interface>org.octopusden.octopus.vcsfacade.client.impl.VcsFacadeClientParametersProvider</interface>
+    </component>
+
+    <component key="vcsFacadeService"
+               name="VCS Facade Service"
+               class="org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeServiceImpl"
+               public="true">
+        <interface>org.octopusden.octopus.jira.vcs.integration.vcsfacade.VcsFacadeService</interface>
+    </component>
+
     <web-section key="octopus-jira-vcs.admin-section" location="admin_plugins_menu" name="VCS Facade" weight="90">
         <label key="VCS Panel"/>
     </web-section>
