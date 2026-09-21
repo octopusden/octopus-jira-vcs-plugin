@@ -3,7 +3,7 @@ package org.octopusden.octopus.jira.vcs.config
 enum class PluginProperty(
     val key: String,
     @Suppress("unused") val displayName: String,
-    @Suppress("unused") val sensitive: Boolean
+    @Suppress("unused") val sensitive: Boolean,
 ) {
     VCS_FACADE_API_URL("vcs-facade.url", "VCS Facade API URL", false),
     VCS_FACADE_RETRY_DELAY_MILLIS("vcs-facade.retry.delay.millis", "VCS Facade API retry timeout (msecs)", false),
@@ -12,8 +12,8 @@ enum class PluginProperty(
     VCS_PANEL_CACHE_SUMMARY_EXPIRE_AFTER_SECS(
         "octopus-vcs-plugin.vcs-panel.cache.summary.expire-after.secs",
         "VCS Panel Summary Cache Expire After (secs)",
-        false
+        false,
     ),
 
-    VCS_PANEL_COMMIT_FILE_LIMIT("octopus-vcs-plugin.vcs-panel.commit.file-limit", "File limit per commit", false);
+    VCS_PANEL_COMMIT_FILE_LIMIT("octopus-vcs-plugin.vcs-panel.commit.file-limit", "File limit per commit", false),
 }
