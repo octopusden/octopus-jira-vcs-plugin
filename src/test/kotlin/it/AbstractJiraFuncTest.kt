@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit
 const val RESTORING_RETRY_THRESHOLD = 3
 
 abstract class AbstractJiraFuncTest : FuncTestCase() {
-
     override fun setUpTest() {
         restoreDump()
     }

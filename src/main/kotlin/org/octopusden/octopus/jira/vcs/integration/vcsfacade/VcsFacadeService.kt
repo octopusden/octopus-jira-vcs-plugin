@@ -1,32 +1,51 @@
 package org.octopusden.octopus.jira.vcs.integration.vcsfacade
 
+import org.octopusden.octopus.vcsfacade.client.common.dto.FileChangeType
 import java.net.URI
 import java.util.Date
-import org.octopusden.octopus.vcsfacade.client.common.dto.FileChangeType
 
 interface VcsFacadeService {
     fun updateProperties()
+
     fun getSummary(issueId: Long): IssueVcsSummary
+
     fun getCommits(issueId: Long): Repositories<Commit>
+
     fun getPullRequests(issueId: Long): Collection<PullRequest>
+
     fun getBranches(issueId: Long): Repositories<Branch>
 
     data class IssueVcsSummary(
-        val branches: IssueBranchSummary, val commits: IssueCommitSummary, val pullRequests: IssuePullRequestSummary
+        val branches: IssueBranchSummary,
+        val commits: IssueCommitSummary,
+        val pullRequests: IssuePullRequestSummary,
     )
 
-    data class IssueBranchSummary(val size: Int, val updated: Date?)
-    data class IssuePullRequestSummary(val size: Int, val status: Status?, val updated: Date?) {
+    data class IssueBranchSummary(
+        val size: Int,
+        val updated: Date?,
+    )
 
+    data class IssuePullRequestSummary(
+        val size: Int,
+        val status: Status?,
+        val updated: Date?,
+    ) {
         @Suppress("unused")
-        enum class Status(val style: String) {
+        enum class Status(
+            val style: String,
+        ) {
             OPEN("info"),
             MERGED("success"),
-            DECLINED("error")
+            DECLINED("error"),
         }
     }
 
-    data class IssueCommitSummary(val size: Int, val latest: Date?)
+    data class IssueCommitSummary(
+        val size: Int,
+        val latest: Date?,
+    )
+
     data class Commit(
         val sha: String,
         val url: String,
@@ -34,34 +53,63 @@ interface VcsFacadeService {
         val date: Date,
         val author: Author,
         val totalFiles: Int,
-        val files: Collection<FileChange>
+        val files: Collection<FileChange>,
     )
 
-    data class Author(val avatar: String?, val name: String)
-    data class RepositoryEntities<T : Any>(val url: String, val avatar: String?, val entities: Collection<T>) {
+    data class Author(
+        val avatar: String?,
+        val name: String,
+    )
+
+    data class RepositoryEntities<T : Any>(
+        val url: String,
+        val avatar: String?,
+        val entities: Collection<T>,
+    ) {
         val name: String = url.substring(url.lastIndexOf("/") + 1)
         val path: String = URI.create(url).path
     }
 
-    data class Repositories<T : Any>(val size: Int, val values: Collection<RepositoryEntities<T>>)
-    data class Reviewer(val name: String, val avatar: String?, val approved: Boolean)
-    data class Branch(val name: String, val url: String, val updated: Date)
+    data class Repositories<T : Any>(
+        val size: Int,
+        val values: Collection<RepositoryEntities<T>>,
+    )
 
-    data class FileChange(val type: Type, val url: String, val path: String) {
+    data class Reviewer(
+        val name: String,
+        val avatar: String?,
+        val approved: Boolean,
+    )
+
+    data class Branch(
+        val name: String,
+        val url: String,
+        val updated: Date,
+    )
+
+    data class FileChange(
+        val type: Type,
+        val url: String,
+        val path: String,
+    ) {
         @Suppress("unused")
-        enum class Type(val style: String) {
+        enum class Type(
+            val style: String,
+        ) {
             ADD("success"),
             MODIFY("new"),
             DELETE("removed"),
-            UNCLASSIFIED("");
+            UNCLASSIFIED(""),
+            ;
 
             companion object {
-                fun valueOf(type: FileChangeType) = when (type) {
-                    FileChangeType.ADD -> VcsFacadeService.FileChange.Type.ADD
-                    FileChangeType.MODIFY -> VcsFacadeService.FileChange.Type.MODIFY
-                    FileChangeType.DELETE -> VcsFacadeService.FileChange.Type.DELETE
-                    else -> VcsFacadeService.FileChange.Type.UNCLASSIFIED
-                }
+                fun valueOf(type: FileChangeType) =
+                    when (type) {
+                        FileChangeType.ADD -> VcsFacadeService.FileChange.Type.ADD
+                        FileChangeType.MODIFY -> VcsFacadeService.FileChange.Type.MODIFY
+                        FileChangeType.DELETE -> VcsFacadeService.FileChange.Type.DELETE
+                        else -> VcsFacadeService.FileChange.Type.UNCLASSIFIED
+                    }
             }
         }
     }
@@ -73,6 +121,6 @@ interface VcsFacadeService {
         val reviewers: Collection<Reviewer>,
         val status: IssuePullRequestSummary.Status,
         val updated: Date,
-        val target: String
+        val target: String,
     )
 }
