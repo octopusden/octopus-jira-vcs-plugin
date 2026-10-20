@@ -20,6 +20,6 @@ jobs:
     #
     # SpotBugs is not in that list on purpose: src/main/kotlin exists here, so the parent's Kotlin
     # profile sets spotbugs.skip=true and the goal no-ops.
-    uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.0.3
+    uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.4.0
     with:
       java-version: '11'
